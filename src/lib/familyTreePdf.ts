@@ -69,14 +69,34 @@ function copyComputedStyles(sourceNode: Element, targetNode: Element) {
   }
 }
 
-function cloneExportPage(pageElement: HTMLElement, width: number, height: number) {
+function resetExportPageLayout(
+  pageElement: HTMLElement,
+  exportWidth: number,
+  exportHeight: number,
+) {
+  pageElement.style.width = `${exportWidth}px`;
+  pageElement.style.height = `${exportHeight}px`;
+  pageElement.style.margin = '0';
+  pageElement.style.boxShadow = 'none';
+
+  const scaleLayer = pageElement.querySelector<HTMLElement>('.print-page__scale');
+
+  if (scaleLayer) {
+    scaleLayer.style.width = `${exportWidth}px`;
+    scaleLayer.style.height = `${exportHeight}px`;
+    scaleLayer.style.transform = 'scale(1)';
+  }
+}
+
+function cloneExportPage(
+  pageElement: HTMLElement,
+  exportWidth: number,
+  exportHeight: number,
+) {
   const clonedPage = pageElement.cloneNode(true) as HTMLElement;
 
   copyComputedStyles(pageElement, clonedPage);
-  clonedPage.style.width = `${width}px`;
-  clonedPage.style.height = `${height}px`;
-  clonedPage.style.margin = '0';
-  clonedPage.style.boxShadow = 'none';
+  resetExportPageLayout(clonedPage, exportWidth, exportHeight);
 
   return clonedPage;
 }
@@ -113,9 +133,15 @@ async function renderPreviewPageToPng(pageElement: HTMLElement) {
     window.requestAnimationFrame(() => resolve());
   });
 
+  const exportWidth =
+    Number(pageElement.dataset.exportWidth) ||
+    Math.max(1, Math.ceil(pageElement.getBoundingClientRect().width));
+  const exportHeight =
+    Number(pageElement.dataset.exportHeight) ||
+    Math.max(1, Math.ceil(pageElement.getBoundingClientRect().height));
   const bounds = pageElement.getBoundingClientRect();
-  const width = Math.max(1, Math.ceil(bounds.width));
-  const height = Math.max(1, Math.ceil(bounds.height));
+  const width = Math.max(1, exportWidth || Math.ceil(bounds.width));
+  const height = Math.max(1, exportHeight || Math.ceil(bounds.height));
   const clonedPage = cloneExportPage(pageElement, width, height);
   const wrapper = document.createElement('div');
 

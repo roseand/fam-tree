@@ -80,7 +80,7 @@ export default function App() {
             zoomOnDoubleClick={false}
             minZoom={0.2}
           >
-            <Controls />
+            <Controls showInteractive={false} />
             <Background
               variant={BackgroundVariant.Dots}
               gap={18}
