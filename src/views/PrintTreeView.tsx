@@ -267,6 +267,12 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
       <header className="print-toolbar">
         <div>
           <div className="hero__eyebrow">
+            <img
+              className="hero__mark"
+              src="/fallen-leaf.png"
+              alt=""
+              aria-hidden="true"
+            />
             <p className="hero__kicker">Family Tree Visualiser</p>
             <p className="hero__tag">Loaded from data/{familyTreeDataSource}</p>
           </div>

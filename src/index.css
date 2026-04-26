@@ -82,6 +82,13 @@ body {
   gap: 10px 12px;
 }
 
+.hero__mark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
 .hero__kicker {
   margin: 0;
   font-size: 0.76rem;
