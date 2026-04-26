@@ -4,7 +4,7 @@ import type {
   FamilyTreeData,
   FamilyTreeFamily,
   FamilyTreePerson,
-} from '../data/familyTree';
+} from './familyTree';
 
 export type PersonNodeData = {
   person: FamilyTreePerson;
@@ -630,14 +630,8 @@ export function buildFamilyTreeGraph(tree: FamilyTreeData) {
         type: 'smoothstep',
         animated: false,
         style: {
-          stroke: '#725b45',
+          stroke: '#000000',
           strokeWidth: 2,
-        },
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          width: 18,
-          height: 18,
-          color: '#725b45',
         },
       });
     }
@@ -650,14 +644,14 @@ export function buildFamilyTreeGraph(tree: FamilyTreeData) {
         type: 'smoothstep',
         animated: false,
         style: {
-          stroke: '#725b45',
+          stroke: '#000000',
           strokeWidth: 2,
         },
         markerEnd: {
           type: MarkerType.ArrowClosed,
           width: 18,
           height: 18,
-          color: '#725b45',
+          color: '#000000',
         },
       });
     }

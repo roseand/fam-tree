@@ -1,14 +1,13 @@
 import { useRef, useState } from 'react';
 import type { Edge } from '@xyflow/react';
 import { PersonCard } from '../components/PersonCard';
-import { initialFamilyTree } from '../data/familyTree';
+import { familyTreeData, familyTreeDataSource } from '../lib/familyTree';
 import type { FamilyTreeGraphNode, PersonNodeData } from '../lib/familyTreeGraph';
 import { downloadFamilyTreePdf } from '../lib/familyTreePdf';
 import {
   buildPrintEdgePath,
   buildPrintLayout,
   getCanvasNodeRect,
-  PRINT_PAGE_MARGIN_MM,
 } from '../lib/familyTreePrint';
 
 type PrintTreeViewProps = {
@@ -23,6 +22,10 @@ function getGraphPageUrl() {
   url.searchParams.delete('view');
 
   return url.toString();
+}
+
+function formatPageIndex(value: number) {
+  return String(value).padStart(2, '0');
 }
 
 export function PrintTreeView({ graph }: PrintTreeViewProps) {
@@ -45,7 +48,7 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
         pagesRef.current?.querySelectorAll<HTMLElement>('.print-page') ?? [],
       );
 
-      await downloadFamilyTreePdf(pageElements, initialFamilyTree.tree.title);
+      await downloadFamilyTreePdf(pageElements, familyTreeData.tree.title);
     } catch (error) {
       setExportError(
         error instanceof Error
@@ -61,8 +64,11 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
     <main className="print-view">
       <header className="print-toolbar">
         <div>
-          <p className="hero__kicker">PDF Export</p>
-          <h1 className="print-toolbar__title">{initialFamilyTree.tree.title}</h1>
+          <div className="hero__eyebrow">
+            <p className="hero__kicker">Family Tree Visualiser</p>
+            <p className="hero__tag">Loaded from data/{familyTreeDataSource}</p>
+          </div>
+          <h1 className="print-toolbar__title">PDF Export</h1>
           <p className="print-toolbar__meta">
             {layout.pageCountX * layout.pageCountY} A4 landscape pages arranged in{' '}
             {layout.pageCountY} row{layout.pageCountY === 1 ? '' : 's'} and{' '}
@@ -86,9 +92,9 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
 
       <section className="print-help">
         <p>
-          This preview shows the tiled A4 pages exactly as they will be captured
-          into the PDF file. Downloading keeps the same page sectors and uses a{' '}
-          {PRINT_PAGE_MARGIN_MM} mm margin.
+          This preview shows the same layout that will be written into the PDF
+          file. Each sheet uses the full page area, so the printed pages can be
+          aligned edge to edge.
         </p>
         {exportError ? (
           <p className="print-help__error" role="alert">
@@ -101,10 +107,17 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
         {layout.pages.map((page, index) => (
           <article key={page.id} className="print-page">
             <div className="print-page__badge">
-              Page {index + 1} - Row {page.row + 1}, Col {page.column + 1}
+              p{formatPageIndex(index + 1)}, r{formatPageIndex(page.row + 1)}, c
+              {formatPageIndex(page.column + 1)}
             </div>
             <div className="print-page__content">
-              <div className="print-page__viewport">
+              <div
+                className="print-page__viewport"
+                style={{
+                  width: `${layout.pageWidth}px`,
+                  height: `${layout.pageHeight}px`,
+                }}
+              >
                 <div
                   className="print-page__canvas"
                   style={{
@@ -130,7 +143,7 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
                         markerHeight="5"
                         orient="auto-start-reverse"
                       >
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#725b45" />
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#000000" />
                       </marker>
                     </defs>
                     {graph.edges.map((edge) => {
@@ -150,7 +163,9 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
                           key={edge.id}
                           d={path}
                           className="print-edge"
-                          markerEnd={`url(#print-arrow-${page.id})`}
+                          markerEnd={
+                            edge.markerEnd ? `url(#print-arrow-${page.id})` : undefined
+                          }
                         />
                       );
                     })}

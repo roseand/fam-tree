@@ -1,12 +1,30 @@
 :root {
+  --screen-shell-padding: 24px;
+  --screen-surface-width: calc(297mm + var(--screen-shell-padding) * 2);
+  --ui-bg: #eef3f9;
+  --ui-panel: rgba(255, 255, 255, 0.92);
+  --ui-panel-border: rgba(148, 163, 184, 0.28);
+  --ui-panel-shadow: rgba(15, 23, 42, 0.08);
+  --ui-text-strong: #0f172a;
+  --ui-text: #334155;
+  --ui-text-soft: #64748b;
+  --ui-accent: #2563eb;
+  --ui-accent-strong: #1d4ed8;
+  --ui-accent-soft: rgba(37, 99, 235, 0.1);
   color-scheme: light;
-  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-family:
+    "Aptos",
+    "Segoe UI Variable Text",
+    "Segoe UI",
+    "Helvetica Neue",
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #2c2015;
+  color: var(--ui-text-strong);
   background:
-    radial-gradient(circle at top, rgba(255, 245, 221, 0.88), transparent 44%),
-    linear-gradient(180deg, #efe3c8 0%, #e1cfac 100%);
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.11), transparent 26%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.09), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, var(--ui-bg) 100%);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -26,73 +44,98 @@ body,
 
 body {
   min-height: 100vh;
+  background: transparent;
 }
 
 .app-shell {
   min-height: 100vh;
-  padding: 28px;
+  padding: var(--screen-shell-padding);
+}
+
+.hero,
+.canvas-panel,
+.print-toolbar,
+.print-help {
+  border: 1px solid var(--ui-panel-border);
+  background: var(--ui-panel);
+  box-shadow: 0 20px 48px var(--ui-panel-shadow);
 }
 
 .hero {
   margin: 0 auto 20px;
-  max-width: 1280px;
-  padding: 24px 28px;
-  border: 1px solid rgba(92, 68, 46, 0.16);
-  border-radius: 28px;
-  background: rgba(255, 250, 238, 0.82);
-  box-shadow: 0 24px 60px rgba(87, 64, 43, 0.12);
-  backdrop-filter: blur(10px);
+  width: min(100%, var(--screen-surface-width));
+  padding: 28px 30px;
+  border-radius: 24px;
 }
 
 .hero h1 {
-  margin: 6px 0 10px;
-  font-size: clamp(2rem, 3vw, 3.5rem);
-  line-height: 1.05;
+  margin: 10px 0 12px;
+  font-size: clamp(2.1rem, 3vw, 3.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 12px;
 }
 
 .hero__kicker {
   margin: 0;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7c5a3f;
+  color: var(--ui-accent);
+}
+
+.hero__tag {
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ui-text-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .hero__text {
   margin: 0;
-  max-width: 760px;
-  font-size: 1.02rem;
-  color: #5f4834;
+  max-width: 780px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ui-text);
 }
 
 .canvas-panel {
   margin: 0 auto;
-  max-width: 1280px;
-  padding: 18px;
-  border: 1px solid rgba(92, 68, 46, 0.16);
-  border-radius: 30px;
-  background: rgba(251, 247, 239, 0.8);
-  box-shadow: 0 24px 60px rgba(87, 64, 43, 0.12);
+  width: min(100%, var(--screen-surface-width));
+  padding: 20px;
+  border-radius: 24px;
 }
 
 .canvas-panel__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
   flex-wrap: wrap;
-  padding: 8px 10px 18px;
+  padding: 8px 8px 18px;
 }
 
 .canvas-panel__header h2 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
 }
 
 .canvas-panel__header p {
   margin: 4px 0 0;
-  color: #6a523d;
+  color: var(--ui-text-soft);
+  font-size: 0.95rem;
 }
 
 .canvas-panel__actions {
@@ -102,22 +145,16 @@ body {
 .flow-frame {
   height: min(72vh, 820px);
   overflow: hidden;
-  border: 1px solid rgba(92, 68, 46, 0.14);
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(244, 234, 214, 0.82)),
-    repeating-linear-gradient(
-      0deg,
-      rgba(124, 90, 63, 0.05),
-      rgba(124, 90, 63, 0.05) 28px,
-      transparent 28px,
-      transparent 56px
-    );
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 10px 28px rgba(15, 23, 42, 0.05);
 }
 
 .person-node {
-  --node-top: #fffdf8;
-  --node-bottom: #f2e5cc;
+  --node-fill: #f8fafc;
   --node-border: rgba(95, 73, 51, 0.24);
   --node-shadow: rgba(74, 54, 37, 0.14);
   --node-text: #5f4834;
@@ -131,16 +168,13 @@ body {
   padding: 20px 18px;
   border: 1px solid var(--node-border);
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--node-top) 0%, var(--node-bottom) 100%);
-  box-shadow:
-    0 12px 20px var(--node-shadow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  background: var(--node-fill);
+  box-shadow: 0 10px 18px var(--node-shadow);
   text-align: center;
 }
 
 .person-node--female.person-node--bloodline {
-  --node-top: #efc0c8;
-  --node-bottom: #cf707e;
+  --node-fill: #dc8795;
   --node-border: rgba(148, 69, 83, 0.42);
   --node-shadow: rgba(118, 56, 68, 0.22);
   --node-text: #542d35;
@@ -148,8 +182,7 @@ body {
 }
 
 .person-node--female.person-node--married-in {
-  --node-top: #f7f1f2;
-  --node-bottom: #e5d5d8;
+  --node-fill: #ece0e3;
   --node-border: rgba(158, 141, 146, 0.34);
   --node-shadow: rgba(114, 101, 105, 0.1);
   --node-text: #6d5d61;
@@ -157,8 +190,7 @@ body {
 }
 
 .person-node--male.person-node--bloodline {
-  --node-top: #c9ddf4;
-  --node-bottom: #6ea4d8;
+  --node-fill: #8bb8e3;
   --node-border: rgba(65, 108, 151, 0.42);
   --node-shadow: rgba(52, 87, 123, 0.22);
   --node-text: #233d56;
@@ -166,8 +198,7 @@ body {
 }
 
 .person-node--male.person-node--married-in {
-  --node-top: #f1f5f8;
-  --node-bottom: #d8e0e8;
+  --node-fill: #e1e9f0;
   --node-border: rgba(137, 150, 165, 0.34);
   --node-shadow: rgba(96, 107, 120, 0.1);
   --node-text: #596673;
@@ -175,8 +206,7 @@ body {
 }
 
 .person-node--unknown.person-node--bloodline {
-  --node-top: #ece3d6;
-  --node-bottom: #d2c4b2;
+  --node-fill: #ddd0bd;
   --node-border: rgba(119, 102, 81, 0.36);
   --node-shadow: rgba(87, 74, 58, 0.16);
   --node-text: #4c4032;
@@ -184,8 +214,7 @@ body {
 }
 
 .person-node--unknown.person-node--married-in {
-  --node-top: #f5efe6;
-  --node-bottom: #e5dacb;
+  --node-fill: #ece2d6;
   --node-border: rgba(140, 122, 99, 0.24);
   --node-shadow: rgba(87, 74, 58, 0.12);
   --node-text: #5d5144;
@@ -224,9 +253,8 @@ body {
   width: 12px;
   height: 12px;
   border-radius: 999px;
-  border: 2px solid #fff6e4;
-  background: #805d40;
-  box-shadow: 0 0 0 1px rgba(95, 73, 51, 0.22);
+  border: 0;
+  background: #000;
 }
 
 .node-handle {
@@ -234,7 +262,7 @@ body {
   height: 2px;
   border: 0;
   border-radius: 999px;
-  background: #725b45;
+  background: #000;
 }
 
 .print-button {
@@ -242,45 +270,74 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 42px;
-  padding: 0 16px;
-  border: 1px solid rgba(97, 72, 49, 0.22);
+  padding: 0 18px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
   border-radius: 999px;
-  background: linear-gradient(180deg, #8f6d4c 0%, #77573b 100%);
+  background: linear-gradient(180deg, var(--ui-accent) 0%, var(--ui-accent-strong) 100%);
   box-shadow:
-    0 12px 20px rgba(87, 64, 43, 0.14),
+    0 10px 24px rgba(37, 99, 235, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  color: #fff9ef;
+  color: #fff;
   font-size: 0.9rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease;
+}
+
+.print-button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 28px rgba(37, 99, 235, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.print-button:disabled {
+  cursor: progress;
+  opacity: 0.72;
+  transform: none;
 }
 
 .print-button--secondary {
-  background: rgba(255, 251, 243, 0.92);
-  color: #5e4631;
+  border-color: rgba(148, 163, 184, 0.32);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
+  color: var(--ui-text-strong);
+}
+
+.print-button--secondary:hover {
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
 }
 
 .legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 14px;
-  justify-content: flex-end;
+  gap: 10px 12px;
+  justify-content: flex-start;
 }
 
 .legend__item {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.82rem;
-  color: #654d39;
+  padding: 6px 10px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.92);
+  font-size: 0.79rem;
+  color: var(--ui-text);
+  font-weight: 600;
 }
 
 .legend__swatch {
   width: 14px;
   height: 14px;
   border-radius: 999px;
-  border: 1px solid rgba(95, 73, 51, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.22);
 }
 
 .legend__swatch--female-bloodline {
@@ -300,23 +357,20 @@ body {
 }
 
 .react-flow__attribution {
-  background: rgba(255, 250, 238, 0.9);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .print-view {
   min-height: 100vh;
-  padding: 24px;
+  padding: var(--screen-shell-padding);
 }
 
 .print-toolbar,
 .print-help {
   margin: 0 auto 18px;
-  max-width: calc(297mm + 48px);
+  width: min(100%, var(--screen-surface-width));
   padding: 20px 24px;
-  border: 1px solid rgba(92, 68, 46, 0.16);
-  border-radius: 26px;
-  background: rgba(255, 250, 238, 0.9);
-  box-shadow: 0 24px 60px rgba(87, 64, 43, 0.12);
+  border-radius: 24px;
 }
 
 .print-toolbar {
@@ -328,20 +382,22 @@ body {
 }
 
 .print-toolbar__title {
-  margin: 6px 0 8px;
+  margin: 10px 0 8px;
   font-size: clamp(1.8rem, 2.5vw, 2.8rem);
-  line-height: 1.05;
+  line-height: 1;
+  letter-spacing: -0.03em;
 }
 
 .print-toolbar__meta,
 .print-help p {
   margin: 0;
-  color: #624a37;
+  color: var(--ui-text);
+  line-height: 1.6;
 }
 
 .print-help__error {
   margin-top: 10px !important;
-  color: #8a2d3b !important;
+  color: #b42318 !important;
   font-weight: 700;
 }
 
@@ -356,57 +412,40 @@ body {
   flex-direction: column;
   gap: 24px;
   align-items: center;
+  width: min(100%, var(--screen-surface-width));
+  margin: 0 auto;
 }
 
 .print-page {
   position: relative;
   width: 297mm;
   height: 210mm;
-  padding: 10mm;
-  border: 1px solid rgba(92, 68, 46, 0.18);
-  border-radius: 10px;
-  background: #fffdf8;
-  box-shadow: 0 24px 44px rgba(74, 54, 37, 0.18);
+  padding: 0;
+  background: #fff;
   overflow: hidden;
 }
 
 .print-page__badge {
   position: absolute;
-  top: 5mm;
-  right: 7mm;
+  top: 4mm;
+  left: 5mm;
   z-index: 3;
-  padding: 4px 10px;
-  border: 1px solid rgba(92, 68, 46, 0.14);
-  border-radius: 999px;
-  background: rgba(255, 250, 238, 0.95);
-  color: #5c4530;
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  color: rgba(89, 89, 89, 0.72);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
 }
 
 .print-page__content {
   position: relative;
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(92, 68, 46, 0.1);
-  border-radius: 8px;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 241, 228, 0.96)),
-    repeating-linear-gradient(
-      0deg,
-      rgba(124, 90, 63, 0.04),
-      rgba(124, 90, 63, 0.04) 28px,
-      transparent 28px,
-      transparent 56px
-    );
+  background: #fff;
 }
 
 .print-page__viewport {
   position: relative;
-  width: 1047px;
-  height: 718px;
   overflow: hidden;
 }
 
@@ -446,20 +485,26 @@ body {
 
 .print-edge {
   fill: none;
-  stroke: #725b45;
+  stroke: #000;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 @media (max-width: 900px) {
+  :root {
+    --screen-shell-padding: 16px;
+  }
+
   .app-shell {
-    padding: 16px;
+    padding: var(--screen-shell-padding);
   }
 
   .hero,
-  .canvas-panel {
-    border-radius: 22px;
+  .canvas-panel,
+  .print-toolbar,
+  .print-help {
+    border-radius: 20px;
   }
 
   .flow-frame {
@@ -467,7 +512,7 @@ body {
   }
 
   .print-view {
-    padding: 16px;
+    padding: var(--screen-shell-padding);
   }
 
   .print-toolbar,
@@ -517,7 +562,4 @@ body {
     page-break-after: auto;
   }
 
-  .print-page__badge {
-    background: rgba(255, 255, 255, 0.95);
-  }
 }

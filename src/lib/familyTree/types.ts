@@ -1,6 +1,3 @@
-import familiesData from './families.json';
-import peopleData from './people.json';
-
 export type FamilyTreePerson = {
   id: string;
   displayName: string;
@@ -35,16 +32,4 @@ export type FamilyTreeData = {
   families: FamilyTreeFamily[];
 };
 
-const people = peopleData as FamilyTreePerson[];
-const families = familiesData as FamilyTreeFamily[];
-
-export const initialFamilyTree: FamilyTreeData = {
-  version: '1.0',
-  tree: {
-    id: 'saar-family',
-    title: 'Saar Family Tree',
-    rootPersonId: 'p_anna',
-  },
-  people,
-  families,
-};
+export type FamilyTreeDataSource = 'main' | 'example';

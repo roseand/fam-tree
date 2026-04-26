@@ -6,7 +6,7 @@ const MM_TO_PT = 72 / 25.4;
 
 export const PRINT_PAGE_WIDTH_MM = 297;
 export const PRINT_PAGE_HEIGHT_MM = 210;
-export const PRINT_PAGE_MARGIN_MM = 10;
+export const PRINT_PAGE_MARGIN_MM = 0;
 export const PRINT_PAGE_WIDTH_PT = PRINT_PAGE_WIDTH_MM * MM_TO_PT;
 export const PRINT_PAGE_HEIGHT_PT = PRINT_PAGE_HEIGHT_MM * MM_TO_PT;
 export const PRINT_PAGE_MARGIN_PT = PRINT_PAGE_MARGIN_MM * MM_TO_PT;
