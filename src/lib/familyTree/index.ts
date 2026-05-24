@@ -1,7 +1,21 @@
-export { familyTreeData, familyTreeDataSource } from './data';
+export {
+  clearPersistedUploadedFamilyTree,
+  exampleFamilyTreePreview,
+  getExampleFamilyTreeState,
+  loadInitialFamilyTreeState,
+  parseUploadedFamilyTreeJson,
+  persistUploadedFamilyTree,
+  uploadFormatDocumentation,
+  uploadFormatPreview,
+} from './data';
+export type {
+  UploadFormatDocumentationItem,
+  UploadFormatDocumentationSection,
+} from './data';
 export type {
   FamilyTreeData,
   FamilyTreeDataSource,
   FamilyTreeFamily,
   FamilyTreePerson,
+  FamilyTreeState,
 } from './types';

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Edge } from '@xyflow/react';
 import { PersonCard } from '../components/PersonCard';
-import { familyTreeData, familyTreeDataSource } from '../lib/familyTree';
+import type { FamilyTreeData } from '../lib/familyTree';
 import type { FamilyTreeGraphNode, PersonNodeData } from '../lib/familyTreeGraph';
 import { downloadFamilyTreePdf } from '../lib/familyTreePdf';
 import {
@@ -15,6 +15,8 @@ type PrintTreeViewProps = {
     nodes: FamilyTreeGraphNode[];
     edges: Edge[];
   };
+  treeData: FamilyTreeData;
+  dataSourceLabel: string;
 };
 
 function getGraphPageUrl() {
@@ -117,7 +119,11 @@ function buildPageLocalEdgePath(
   ].join(' ');
 }
 
-export function PrintTreeView({ graph }: PrintTreeViewProps) {
+export function PrintTreeView({
+  graph,
+  treeData,
+  dataSourceLabel,
+}: PrintTreeViewProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
   const [exportProgress, setExportProgress] = useState<{
@@ -275,7 +281,7 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
         exportPagesRef.current?.querySelectorAll<HTMLElement>('.print-page') ?? [],
       );
 
-      await downloadFamilyTreePdf(pageElements, familyTreeData.tree.title, {
+      await downloadFamilyTreePdf(pageElements, treeData.tree.title, {
         onProgress: (completed, total) => {
           setExportProgress({ completed, total });
         },
@@ -447,7 +453,7 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
               aria-hidden="true"
             />
             <p className="hero__kicker">Family Tree Visualiser</p>
-            <p className="hero__tag">Loaded from data/{familyTreeDataSource}</p>
+            <p className="hero__tag">Showing {dataSourceLabel}</p>
           </div>
           <h1 className="print-toolbar__title">PDF Export</h1>
           <p className="print-toolbar__meta">

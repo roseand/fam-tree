@@ -80,7 +80,7 @@ function getAgeSuffix(person: PersonNodeData['person']) {
 
     const age = getAgeAtDate(birthDate, deathDate);
 
-    return age >= 0 ? ` (${age})` : null;
+    return age !== null ? ` (${age})` : null;
   }
 
   if (person.birth.dateText && person.death.dateText) {
@@ -130,7 +130,7 @@ function getAgeSuffix(person: PersonNodeData['person']) {
       year: today.getFullYear(),
     });
 
-    return age >= 0 ? ` (${age})` : null;
+    return age !== null ? ` (${age})` : null;
   }
 
   if (!isDeceased && person.birth.dateText) {

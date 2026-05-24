@@ -32,4 +32,10 @@ export type FamilyTreeData = {
   families: FamilyTreeFamily[];
 };
 
-export type FamilyTreeDataSource = 'main' | 'example';
+export type FamilyTreeDataSource = 'example' | 'uploaded';
+
+export type FamilyTreeState = {
+  data: FamilyTreeData;
+  source: FamilyTreeDataSource;
+  sourceLabel: string;
+};
