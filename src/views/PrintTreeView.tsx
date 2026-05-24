@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Edge } from '@xyflow/react';
 import { PersonCard } from '../components/PersonCard';
 import { familyTreeData, familyTreeDataSource } from '../lib/familyTree';
 import type { FamilyTreeGraphNode, PersonNodeData } from '../lib/familyTreeGraph';
 import { downloadFamilyTreePdf } from '../lib/familyTreePdf';
 import {
-  buildPrintEdgePath,
   buildPrintLayout,
   getCanvasNodeRect,
+  getPrintEdgePoints,
 } from '../lib/familyTreePrint';
 
 type PrintTreeViewProps = {
@@ -28,19 +28,188 @@ function formatPageIndex(value: number) {
   return String(value).padStart(2, '0');
 }
 
-const PREVIEW_GRID_GAP = 16;
+const PREVIEW_GRID_GAP = 2;
 const PREVIEW_MAX_PAGE_WIDTH = 280;
 const PREVIEW_MIN_PAGE_WIDTH = 16;
+
+type PageRenderNode = {
+  id: string;
+  type: FamilyTreeGraphNode['type'];
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  data: FamilyTreeGraphNode['data'];
+};
+
+type PageRenderEdge = {
+  id: string;
+  path: string;
+  hasMarkerEnd: boolean;
+};
+
+type PageRenderData = {
+  pageIndex: number;
+  page: ReturnType<typeof buildPrintLayout>['pages'][number];
+  nodes: PageRenderNode[];
+  edges: PageRenderEdge[];
+  isEmpty: boolean;
+};
+
+function rectIntersectsPage(
+  rect: { left: number; top: number; width: number; height: number },
+  page: { offsetX: number; offsetY: number },
+  pageWidth: number,
+  pageHeight: number,
+) {
+  const rectRight = rect.left + rect.width;
+  const rectBottom = rect.top + rect.height;
+  const pageRight = page.offsetX + pageWidth;
+  const pageBottom = page.offsetY + pageHeight;
+
+  return (
+    rect.left < pageRight &&
+    rectRight > page.offsetX &&
+    rect.top < pageBottom &&
+    rectBottom > page.offsetY
+  );
+}
+
+function edgePointsIntersectPage(
+  edgePoints: NonNullable<ReturnType<typeof getPrintEdgePoints>>,
+  page: { offsetX: number; offsetY: number },
+  pageWidth: number,
+  pageHeight: number,
+) {
+  const minX = Math.min(edgePoints.sourceX, edgePoints.targetX);
+  const maxX = Math.max(edgePoints.sourceX, edgePoints.targetX);
+  const minY = Math.min(edgePoints.sourceY, edgePoints.middleY, edgePoints.targetY);
+  const maxY = Math.max(edgePoints.sourceY, edgePoints.middleY, edgePoints.targetY);
+
+  return rectIntersectsPage(
+    {
+      left: minX,
+      top: minY,
+      width: maxX - minX,
+      height: maxY - minY,
+    },
+    page,
+    pageWidth,
+    pageHeight,
+  );
+}
+
+function buildPageLocalEdgePath(
+  edgePoints: NonNullable<ReturnType<typeof getPrintEdgePoints>>,
+  page: { offsetX: number; offsetY: number },
+) {
+  const sourceX = edgePoints.sourceX - page.offsetX;
+  const sourceY = edgePoints.sourceY - page.offsetY;
+  const middleY = edgePoints.middleY - page.offsetY;
+  const targetX = edgePoints.targetX - page.offsetX;
+  const targetY = edgePoints.targetY - page.offsetY;
+
+  return [
+    `M ${sourceX} ${sourceY}`,
+    `L ${sourceX} ${middleY}`,
+    `L ${targetX} ${middleY}`,
+    `L ${targetX} ${targetY}`,
+  ].join(' ');
+}
 
 export function PrintTreeView({ graph }: PrintTreeViewProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [exportProgress, setExportProgress] = useState<{
+    completed: number;
+    total: number;
+  } | null>(null);
+  const [skipEmptyPages, setSkipEmptyPages] = useState(true);
   const [previewContainerWidth, setPreviewContainerWidth] = useState(0);
   const previewPagesRef = useRef<HTMLElement | null>(null);
   const exportPagesRef = useRef<HTMLElement | null>(null);
-  const layout = buildPrintLayout(graph.nodes);
+  const layout = useMemo(() => buildPrintLayout(graph.nodes), [graph.nodes]);
   const graphPageUrl = getGraphPageUrl();
-  const nodesById = new Map(graph.nodes.map((node) => [node.id, node]));
+  const nodesById = useMemo(
+    () => new Map(graph.nodes.map((node) => [node.id, node])),
+    [graph.nodes],
+  );
+  const pageRenderData = useMemo<PageRenderData[]>(() => {
+    return layout.pages.map((page, pageIndex) => {
+      const nodes = graph.nodes
+        .map((node) => {
+          const rect = getCanvasNodeRect(node, layout.originX, layout.originY);
+
+          if (!rectIntersectsPage(rect, page, layout.pageWidth, layout.pageHeight)) {
+            return null;
+          }
+
+          return {
+            id: node.id,
+            type: node.type,
+            data: node.data,
+            left: rect.left - page.offsetX,
+            top: rect.top - page.offsetY,
+            width: rect.width,
+            height: rect.height,
+          };
+        })
+        .filter((node): node is PageRenderNode => node !== null);
+
+      const edges = graph.edges
+        .map((edge) => {
+          const edgePoints = getPrintEdgePoints(
+            edge,
+            nodesById,
+            layout.originX,
+            layout.originY,
+          );
+
+          if (
+            !edgePoints ||
+            !edgePointsIntersectPage(
+              edgePoints,
+              page,
+              layout.pageWidth,
+              layout.pageHeight,
+            )
+          ) {
+            return null;
+          }
+
+          return {
+            id: edge.id,
+            path: buildPageLocalEdgePath(edgePoints, page),
+            hasMarkerEnd: Boolean(edge.markerEnd),
+          };
+        })
+        .filter((edge): edge is PageRenderEdge => edge !== null);
+
+      return {
+        pageIndex,
+        page,
+        nodes,
+        edges,
+        isEmpty: nodes.length === 0 && edges.length === 0,
+      };
+    });
+  }, [
+    graph.edges,
+    graph.nodes,
+    layout.originX,
+    layout.originY,
+    layout.pageHeight,
+    layout.pageWidth,
+    layout.pages,
+    nodesById,
+  ]);
+  const exportPageRenderData = useMemo(
+    () =>
+      skipEmptyPages
+        ? pageRenderData.filter((pageData) => !pageData.isEmpty)
+        : pageRenderData,
+    [pageRenderData, skipEmptyPages],
+  );
   const availablePreviewWidth = Math.max(
     1,
     previewContainerWidth - PREVIEW_GRID_GAP * (layout.pageCountX - 1),
@@ -58,6 +227,11 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
     Math.round(layout.pageHeight * previewScale),
   );
   const isCompactPreview = previewPageWidth < 96;
+  const exportProgressPercent = exportProgress
+    ? Math.round(
+        (exportProgress.completed / Math.max(exportProgress.total, 1)) * 100,
+      )
+    : null;
 
   useEffect(() => {
     const previewContainer = previewPagesRef.current;
@@ -91,11 +265,21 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
     try {
       setIsExporting(true);
       setExportError(null);
+      setExportProgress({ completed: 0, total: exportPageRenderData.length });
+      await new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => resolve());
+        });
+      });
       const pageElements = Array.from(
         exportPagesRef.current?.querySelectorAll<HTMLElement>('.print-page') ?? [],
       );
 
-      await downloadFamilyTreePdf(pageElements, familyTreeData.tree.title);
+      await downloadFamilyTreePdf(pageElements, familyTreeData.tree.title, {
+        onProgress: (completed, total) => {
+          setExportProgress({ completed, total });
+        },
+      });
     } catch (error) {
       setExportError(
         error instanceof Error
@@ -104,10 +288,13 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
       );
     } finally {
       setIsExporting(false);
+      setExportProgress(null);
     }
   }
 
-  function renderPageCanvas(page: (typeof layout.pages)[number]) {
+  function renderPageCanvas(pageData: PageRenderData) {
+    const { page, edges, nodes } = pageData;
+
     return (
       <div
         className="print-page__viewport"
@@ -119,16 +306,15 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
         <div
           className="print-page__canvas"
           style={{
-            width: `${layout.canvasWidth}px`,
-            height: `${layout.canvasHeight}px`,
-            transform: `translate(${-page.offsetX}px, ${-page.offsetY}px)`,
+            width: `${layout.pageWidth}px`,
+            height: `${layout.pageHeight}px`,
           }}
         >
           <svg
             className="print-layer print-layer--edges"
-            width={layout.canvasWidth}
-            height={layout.canvasHeight}
-            viewBox={`0 0 ${layout.canvasWidth} ${layout.canvasHeight}`}
+            width={layout.pageWidth}
+            height={layout.pageHeight}
+            viewBox={`0 0 ${layout.pageWidth} ${layout.pageHeight}`}
             aria-hidden="true"
           >
             <defs>
@@ -144,25 +330,14 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="#000000" />
               </marker>
             </defs>
-            {graph.edges.map((edge) => {
-              const path = buildPrintEdgePath(
-                edge,
-                nodesById,
-                layout.originX,
-                layout.originY,
-              );
-
-              if (!path) {
-                return null;
-              }
-
+            {edges.map((edge) => {
               return (
                 <path
                   key={edge.id}
-                  d={path}
+                  d={edge.path}
                   className="print-edge"
                   markerEnd={
-                    edge.markerEnd ? `url(#print-arrow-${page.id})` : undefined
+                    edge.hasMarkerEnd ? `url(#print-arrow-${page.id})` : undefined
                   }
                 />
               );
@@ -170,19 +345,17 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
           </svg>
 
           <div className="print-layer print-layer--nodes">
-            {graph.nodes.map((node) => {
-              const rect = getCanvasNodeRect(node, layout.originX, layout.originY);
-
+            {nodes.map((node) => {
               if (node.type === 'person') {
                 return (
                   <div
                     key={node.id}
                     className="print-node"
                     style={{
-                      left: `${rect.left}px`,
-                      top: `${rect.top}px`,
-                      width: `${rect.width}px`,
-                      height: `${rect.height}px`,
+                      left: `${node.left}px`,
+                      top: `${node.top}px`,
+                      width: `${node.width}px`,
+                      height: `${node.height}px`,
                     }}
                   >
                     <PersonCard data={node.data as PersonNodeData} />
@@ -195,10 +368,10 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
                   key={node.id}
                   className="print-node print-node--family"
                   style={{
-                    left: `${rect.left}px`,
-                    top: `${rect.top}px`,
-                    width: `${rect.width}px`,
-                    height: `${rect.height}px`,
+                    left: `${node.left}px`,
+                    top: `${node.top}px`,
+                    width: `${node.width}px`,
+                    height: `${node.height}px`,
                   }}
                 >
                   <div className="family-node family-node--print">
@@ -214,11 +387,11 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
   }
 
   function renderPage(
-    page: (typeof layout.pages)[number],
-    index: number,
+    pageData: PageRenderData,
     mode: 'preview' | 'export',
   ) {
     const isPreview = mode === 'preview';
+    const { page, pageIndex } = pageData;
 
     return (
       <article
@@ -242,7 +415,7 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
       >
         {isPreview ? null : (
           <div className="print-page__badge">
-            p{formatPageIndex(index + 1)}, r{formatPageIndex(page.row + 1)}, c
+            p{formatPageIndex(pageIndex + 1)}, r{formatPageIndex(page.row + 1)}, c
             {formatPageIndex(page.column + 1)}
           </div>
         )}
@@ -255,7 +428,7 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
               transform: `scale(${isPreview ? previewScale : 1})`,
             }}
           >
-            {renderPageCanvas(page)}
+            {renderPageCanvas(pageData)}
           </div>
         </div>
       </article>
@@ -284,6 +457,14 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
           </p>
         </div>
         <div className="print-toolbar__actions">
+          <label className="print-option">
+            <input
+              type="checkbox"
+              checked={skipEmptyPages}
+              onChange={(event) => setSkipEmptyPages(event.target.checked)}
+            />
+            <span>Skip Empty Pages In PDF</span>
+          </label>
           <a className="print-button print-button--secondary" href={graphPageUrl}>
             Back To Graph
           </a>
@@ -293,7 +474,11 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
             onClick={handleDownloadPdf}
             disabled={isExporting}
           >
-            {isExporting ? 'Preparing PDF...' : 'Download PDF'}
+            {isExporting && exportProgress
+              ? `Preparing PDF (${exportProgressPercent}%)...`
+              : isExporting
+                ? 'Preparing PDF...'
+                : 'Download PDF'}
           </button>
         </div>
       </header>
@@ -311,19 +496,27 @@ export function PrintTreeView({ graph }: PrintTreeViewProps) {
         ) : null}
       </section>
 
-      <section
-        ref={previewPagesRef}
-        className="print-pages"
-        style={{
-          gridTemplateColumns: `repeat(${layout.pageCountX}, ${previewPageWidth}px)`,
-        }}
-      >
-        {layout.pages.map((page, index) => renderPage(page, index, 'preview'))}
+      <section className="print-preview-panel">
+        <section
+          ref={previewPagesRef}
+          className="print-pages"
+          style={{
+            gridTemplateColumns: `repeat(${layout.pageCountX}, ${previewPageWidth}px)`,
+          }}
+        >
+          {pageRenderData.map((pageData) => renderPage(pageData, 'preview'))}
+        </section>
       </section>
 
-      <section ref={exportPagesRef} className="print-pages print-pages--export" aria-hidden="true">
-        {layout.pages.map((page, index) => renderPage(page, index, 'export'))}
-      </section>
+      {isExporting ? (
+        <section
+          ref={exportPagesRef}
+          className="print-pages print-pages--export"
+          aria-hidden="true"
+        >
+          {exportPageRenderData.map((pageData) => renderPage(pageData, 'export'))}
+        </section>
+      ) : null}
     </main>
   );
 }

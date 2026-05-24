@@ -55,7 +55,8 @@ body {
 .hero,
 .canvas-panel,
 .print-toolbar,
-.print-help {
+.print-help,
+.print-preview-panel {
   border: 1px solid var(--ui-panel-border);
   background: var(--ui-panel);
   box-shadow: 0 20px 48px var(--ui-panel-shadow);
@@ -393,7 +394,8 @@ body {
 }
 
 .print-toolbar,
-.print-help {
+.print-help,
+.print-preview-panel {
   margin: 0 auto 18px;
   width: min(100%, var(--screen-surface-width));
   padding: 16px 18px;
@@ -431,7 +433,32 @@ body {
 .print-toolbar__actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
+}
+
+.print-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 4px;
+  color: var(--ui-text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.print-option input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--ui-accent);
+}
+
+.print-preview-panel {
+  overflow: hidden;
+  padding: 14px;
 }
 
 .print-pages {
@@ -439,7 +466,7 @@ body {
   gap: 2px;
   align-items: start;
   justify-content: center;
-  width: min(100%, var(--screen-surface-width));
+  width: 100%;
   margin: 0 auto;
   overflow: auto;
   padding-bottom: 6px;
@@ -560,7 +587,8 @@ body {
   .hero,
   .canvas-panel,
   .print-toolbar,
-  .print-help {
+  .print-help,
+  .print-preview-panel {
     border-radius: 20px;
   }
 
@@ -573,7 +601,8 @@ body {
   }
 
   .print-toolbar,
-  .print-help {
+  .print-help,
+  .print-preview-panel {
     padding: 18px;
   }
 }

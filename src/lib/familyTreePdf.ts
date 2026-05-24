@@ -1,7 +1,11 @@
 import { PDFDocument } from 'pdf-lib';
 import { PRINT_PAGE_HEIGHT_PT, PRINT_PAGE_WIDTH_PT } from './familyTreePrint';
 
-const EXPORT_SCALE = 2;
+const EXPORT_SCALE = 1.5;
+
+type DownloadFamilyTreePdfOptions = {
+  onProgress?: (completedPages: number, totalPages: number) => void;
+};
 
 function slugify(value: string) {
   return value
@@ -200,12 +204,14 @@ function toArrayBuffer(bytes: Uint8Array) {
 export async function downloadFamilyTreePdf(
   pageElements: HTMLElement[],
   title: string,
+  options: DownloadFamilyTreePdfOptions = {},
 ) {
   if (!pageElements.length) {
     throw new Error('No preview pages were available to export.');
   }
 
   const pdfDocument = await PDFDocument.create();
+  const totalPages = pageElements.length;
 
   for (const [pageIndex, pageElement] of pageElements.entries()) {
     let pngBuffer: ArrayBuffer;
@@ -228,6 +234,8 @@ export async function downloadFamilyTreePdf(
       width: PRINT_PAGE_WIDTH_PT,
       height: PRINT_PAGE_HEIGHT_PT,
     });
+
+    options.onProgress?.(pageIndex + 1, totalPages);
   }
 
   const pdfBytes = await pdfDocument.save();
