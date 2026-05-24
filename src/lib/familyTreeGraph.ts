@@ -11,6 +11,8 @@ export type PersonNodeData = {
   isBloodRelative: boolean;
   hasParentConnection: boolean;
   hasChildConnection: boolean;
+  isSearchHighlighted?: boolean;
+  searchHighlightKey?: number;
 };
 
 export type FamilyNodeData = {

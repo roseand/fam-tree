@@ -1,9 +1,19 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import {
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 import {
   Background,
   BackgroundVariant,
   Controls,
   ReactFlow,
+  type ReactFlowInstance,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import {
@@ -34,23 +44,226 @@ export default function App() {
   const [copiedPreviewKey, setCopiedPreviewKey] = useState<
     'upload-format' | 'example-file' | null
   >(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isDraggingSearch, setIsDraggingSearch] = useState(false);
+  const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(null);
+  const [searchHighlightKey, setSearchHighlightKey] = useState(0);
+  const [searchPanelPosition, setSearchPanelPosition] = useState({
+    x: 64,
+    y: 14,
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
+  const [reactFlowInstance, setReactFlowInstance] =
+    useState<ReactFlowInstance | null>(null);
   const copyResetTimeoutRef = useRef<number | null>(null);
+  const searchHighlightTimeoutRef = useRef<number | null>(null);
+  const flowFrameRef = useRef<HTMLDivElement | null>(null);
+  const searchPanelRef = useRef<HTMLElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const searchDragRef = useRef<{
+    startClientX: number;
+    startClientY: number;
+    startX: number;
+    startY: number;
+    panelWidth: number;
+    panelHeight: number;
+  } | null>(null);
+  const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const currentTree = treeState.data;
   const graph = useMemo(() => buildFamilyTreeGraph(currentTree), [currentTree]);
+  const interactiveGraph = useMemo(() => {
+    return {
+      ...graph,
+      nodes: graph.nodes.map((node) => {
+        if (node.type !== 'person') {
+          return node;
+        }
+
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            isSearchHighlighted: node.id === highlightedNodeId,
+            searchHighlightKey:
+              node.id === highlightedNodeId ? searchHighlightKey : undefined,
+          },
+        };
+      }),
+    };
+  }, [graph, highlightedNodeId, searchHighlightKey]);
   const rootPerson = currentTree.people.find(
     (person) => person.id === currentTree.tree.rootPersonId,
   );
   const isPrintView =
     new URLSearchParams(window.location.search).get('view') === 'print';
+  const normalizedSearchTerm = deferredSearchTerm.trim().toLowerCase();
+  const searchMatches = useMemo(() => {
+    if (normalizedSearchTerm.length < 3) {
+      return [];
+    }
+
+    return currentTree.people.filter((person) =>
+      person.displayName.toLowerCase().includes(normalizedSearchTerm),
+    );
+  }, [currentTree.people, normalizedSearchTerm]);
+  const activeMatchIndex = searchMatches.length
+    ? currentMatchIndex % searchMatches.length
+    : 0;
+  const activeMatch = searchMatches[activeMatchIndex] ?? null;
 
   useEffect(() => {
     return () => {
       if (copyResetTimeoutRef.current !== null) {
         window.clearTimeout(copyResetTimeoutRef.current);
       }
+
+      if (searchHighlightTimeoutRef.current !== null) {
+        window.clearTimeout(searchHighlightTimeoutRef.current);
+      }
     };
   }, []);
+
+  useEffect(() => {
+    setCurrentMatchIndex(0);
+  }, [currentTree.tree.id]);
+
+  useEffect(() => {
+    if (!isSearchOpen) {
+      return;
+    }
+
+    const focusHandle = window.requestAnimationFrame(() => {
+      searchInputRef.current?.focus();
+    });
+
+    return () => {
+      window.cancelAnimationFrame(focusHandle);
+    };
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    if (!isSearchOpen) {
+      return;
+    }
+
+    function syncSearchPanelBounds() {
+      if (!searchPanelRef.current) {
+        return;
+      }
+
+      const panelRect = searchPanelRef.current.getBoundingClientRect();
+
+      setSearchPanelPosition((currentPosition) =>
+        clampSearchPanelPosition(
+          currentPosition,
+          panelRect.width,
+          panelRect.height,
+          flowFrameRef.current,
+        ),
+      );
+    }
+
+    syncSearchPanelBounds();
+    window.addEventListener('resize', syncSearchPanelBounds);
+
+    return () => {
+      window.removeEventListener('resize', syncSearchPanelBounds);
+    };
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    if (!isDraggingSearch) {
+      return;
+    }
+
+    function handlePointerMove(event: PointerEvent) {
+      const dragState = searchDragRef.current;
+
+      if (!dragState) {
+        return;
+      }
+
+      const nextPosition = {
+        x: dragState.startX + (event.clientX - dragState.startClientX),
+        y: dragState.startY + (event.clientY - dragState.startClientY),
+      };
+
+      setSearchPanelPosition(
+        clampSearchPanelPosition(
+          nextPosition,
+          dragState.panelWidth,
+          dragState.panelHeight,
+          flowFrameRef.current,
+        ),
+      );
+    }
+
+    function handlePointerUp() {
+      searchDragRef.current = null;
+      setIsDraggingSearch(false);
+    }
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+    };
+  }, [isDraggingSearch]);
+
+  useEffect(() => {
+    if (!reactFlowInstance || !activeMatch) {
+      return;
+    }
+
+    const matchedNode = graph.nodes.find(
+      (node) => node.type === 'person' && node.id === activeMatch.id,
+    );
+
+    if (!matchedNode) {
+      return;
+    }
+
+    const nodeWidth =
+      typeof matchedNode.style?.width === 'number'
+        ? matchedNode.style.width
+        : graph.dimensions.personWidth;
+    const nodeHeight =
+      typeof matchedNode.style?.height === 'number'
+        ? matchedNode.style.height
+        : graph.dimensions.personHeight;
+
+    void reactFlowInstance.setCenter(
+      matchedNode.position.x + nodeWidth / 2,
+      matchedNode.position.y + nodeHeight / 2,
+      {
+        zoom: Math.max(reactFlowInstance.getZoom(), 0.52),
+        duration: 420,
+      },
+    );
+
+    setHighlightedNodeId(activeMatch.id);
+    setSearchHighlightKey((currentValue) => currentValue + 1);
+
+    if (searchHighlightTimeoutRef.current !== null) {
+      window.clearTimeout(searchHighlightTimeoutRef.current);
+    }
+
+    searchHighlightTimeoutRef.current = window.setTimeout(() => {
+      setHighlightedNodeId((currentId) =>
+        currentId === activeMatch.id ? null : currentId,
+      );
+    }, 1450);
+  }, [
+    activeMatch,
+    graph.dimensions.personHeight,
+    graph.dimensions.personWidth,
+    graph.nodes,
+    reactFlowInstance,
+  ]);
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -92,6 +305,57 @@ export default function App() {
     setUploadError(null);
   }
 
+  function handleSearchToggle() {
+    setIsSearchOpen((currentValue) => !currentValue);
+  }
+
+  function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
+    setSearchTerm(event.target.value);
+    setCurrentMatchIndex(0);
+  }
+
+  function cycleSearchMatch(direction: -1 | 1) {
+    if (searchMatches.length < 2) {
+      return;
+    }
+
+    setCurrentMatchIndex((previousIndex) => {
+      const nextIndex = previousIndex + direction;
+
+      if (nextIndex < 0) {
+        return searchMatches.length - 1;
+      }
+
+      return nextIndex % searchMatches.length;
+    });
+  }
+
+  function handleSearchKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && searchMatches.length > 0) {
+      event.preventDefault();
+      cycleSearchMatch(event.shiftKey ? -1 : 1);
+    }
+  }
+
+  function handleSearchDragStart(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.button !== 0 || !searchPanelRef.current) {
+      return;
+    }
+
+    const panelRect = searchPanelRef.current.getBoundingClientRect();
+
+    searchDragRef.current = {
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      startX: searchPanelPosition.x,
+      startY: searchPanelPosition.y,
+      panelWidth: panelRect.width,
+      panelHeight: panelRect.height,
+    };
+    setIsDraggingSearch(true);
+    event.preventDefault();
+  }
+
   async function handleCopyPreview(
     previewText: string,
     previewKey: 'upload-format' | 'example-file',
@@ -126,6 +390,20 @@ export default function App() {
 
   const printLayoutUrl = new URL(window.location.href);
   printLayoutUrl.searchParams.set('view', 'print');
+  const searchStatus =
+    normalizedSearchTerm.length === 0
+      ? 'Type at least 3 letters to search by name.'
+      : normalizedSearchTerm.length < 3
+        ? `Type ${3 - normalizedSearchTerm.length} more letter${
+            3 - normalizedSearchTerm.length === 1 ? '' : 's'
+          } to start searching.`
+        : searchMatches.length === 0
+          ? 'No matching people found.'
+          : searchMatches.length === 1
+            ? `1 match: ${activeMatch?.displayName ?? 'unknown'}`
+            : `${searchMatches.length} matches, showing ${activeMatchIndex + 1} of ${
+                searchMatches.length
+              }: ${activeMatch?.displayName ?? 'unknown'}`;
 
   return (
     <main className="app-shell">
@@ -322,10 +600,101 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flow-frame">
+        <div className="flow-frame" ref={flowFrameRef}>
+          <div className="flow-frame__tools">
+            <button
+              type="button"
+              className={
+                isSearchOpen
+                  ? 'flow-frame__tool-button flow-frame__tool-button--active'
+                  : 'flow-frame__tool-button'
+              }
+              aria-label="Toggle search"
+              aria-pressed={isSearchOpen}
+              title="Toggle search"
+              onClick={handleSearchToggle}
+            >
+              <svg
+                className="flow-frame__tool-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="10.5"
+                  cy="10.5"
+                  r="5.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M15 15 L20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {isSearchOpen ? (
+            <section
+              ref={searchPanelRef}
+              className={
+                isDraggingSearch
+                  ? 'graph-search graph-search--floating graph-search--dragging'
+                  : 'graph-search graph-search--floating'
+              }
+              style={{
+                left: `${searchPanelPosition.x}px`,
+                top: `${searchPanelPosition.y}px`,
+              }}
+            >
+              <div
+                className="graph-search__drag-handle"
+                onPointerDown={handleSearchDragStart}
+              >
+                <div>
+                  <p className="graph-search__label">Search People</p>
+                  <p className="graph-search__hint">Drag to move</p>
+                </div>
+              </div>
+              <div className="graph-search__controls">
+                <input
+                  ref={searchInputRef}
+                  id="graph-search-input"
+                  className="graph-search__input"
+                  type="search"
+                  placeholder="At least 3 letters"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleSearchKeyDown}
+                />
+                <button
+                  type="button"
+                  className="graph-search__button"
+                  onClick={() => cycleSearchMatch(-1)}
+                  disabled={searchMatches.length < 2}
+                >
+                  Prev
+                </button>
+                <button
+                  type="button"
+                  className="graph-search__button"
+                  onClick={() => cycleSearchMatch(1)}
+                  disabled={searchMatches.length < 2}
+                >
+                  Next
+                </button>
+              </div>
+              <p className="graph-search__meta">{searchStatus}</p>
+            </section>
+          ) : null}
+
           <ReactFlow
-            nodes={graph.nodes}
-            edges={graph.edges}
+            nodes={interactiveGraph.nodes}
+            edges={interactiveGraph.edges}
             nodeTypes={nodeTypes}
             fitView
             fitViewOptions={{ padding: 0.2 }}
@@ -334,6 +703,7 @@ export default function App() {
             elementsSelectable
             zoomOnDoubleClick={false}
             minZoom={0.04}
+            onInit={setReactFlowInstance}
           >
             <Controls showInteractive={false} />
             <Background
@@ -346,5 +716,25 @@ export default function App() {
         </div>
       </section>
     </main>
-  );
+    );
+  }
+
+function clampSearchPanelPosition(
+  nextPosition: { x: number; y: number },
+  panelWidth: number,
+  panelHeight: number,
+  container: HTMLDivElement | null,
+) {
+  if (!container) {
+    return nextPosition;
+  }
+
+  const padding = 12;
+  const maxX = Math.max(padding, container.clientWidth - panelWidth - padding);
+  const maxY = Math.max(padding, container.clientHeight - panelHeight - padding);
+
+  return {
+    x: Math.min(Math.max(padding, nextPosition.x), maxX),
+    y: Math.min(Math.max(padding, nextPosition.y), maxY),
+  };
 }
