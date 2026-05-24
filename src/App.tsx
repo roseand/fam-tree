@@ -84,7 +84,7 @@ export default function App() {
             nodesConnectable={false}
             elementsSelectable
             zoomOnDoubleClick={false}
-            minZoom={0.2}
+            minZoom={0.04}
           >
             <Controls showInteractive={false} />
             <Background
