@@ -412,7 +412,7 @@ export default function App() {
           <div className="hero__eyebrow">
             <img
               className="hero__mark"
-              src="/fallen-leaf.png"
+              src={`${import.meta.env.BASE_URL}fallen-leaf.png`}
               alt=""
               aria-hidden="true"
             />
