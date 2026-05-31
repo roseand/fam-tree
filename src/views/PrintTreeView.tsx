@@ -453,56 +453,64 @@ export function PrintTreeView({
               aria-hidden="true"
             />
             <p className="hero__kicker">Family Tree Visualiser</p>
-            <p className="hero__tag">Showing {dataSourceLabel}</p>
           </div>
           <h1 className="print-toolbar__title">PDF Export</h1>
           <p className="print-toolbar__meta">
-            {layout.pageCountX * layout.pageCountY} A4 landscape pages arranged in{' '}
-            {layout.pageCountY} row{layout.pageCountY === 1 ? '' : 's'} and{' '}
-            {layout.pageCountX} column{layout.pageCountX === 1 ? '' : 's'}.
+            Preview your family tree exactly as it will appear on printable A4
+            sheets. Each sheet uses the full page area, so you can download the
+            PDF, print the pages, and align them edge to edge on your wall.
           </p>
-        </div>
-        <div className="print-toolbar__actions">
-          <label className="print-option">
-            <input
-              type="checkbox"
-              checked={skipEmptyPages}
-              onChange={(event) => setSkipEmptyPages(event.target.checked)}
-            />
-            <span>Skip Empty Pages In PDF</span>
-          </label>
-          <a className="print-button print-button--secondary" href={graphPageUrl}>
-            Back To Graph
-          </a>
-          <button
-            type="button"
-            className="print-button"
-            onClick={handleDownloadPdf}
-            disabled={isExporting}
-          >
-            {isExporting && exportProgress
-              ? `Preparing PDF (${exportProgressPercent}%)...`
-              : isExporting
-                ? 'Preparing PDF...'
-                : 'Download PDF'}
-          </button>
         </div>
       </header>
 
-      <section className="print-help">
-        <p>
-          This preview shows the same layout that will be written into the PDF
-          file. Each sheet uses the full page area, so the printed pages can be
-          aligned edge to edge.
-        </p>
+      <section className="print-preview-panel">
+        <div className="visual-panel__header">
+          <div>
+            <div className="visual-panel__title">
+              <h2>Graph Layout Preview</h2>
+              <p className="hero__tag">Showing {dataSourceLabel}</p>
+            </div>
+            <ul className="visual-panel__stats">
+              <li>{layout.pageCountX * layout.pageCountY} A4 landscape pages</li>
+              <li>
+                {layout.pageCountY} row{layout.pageCountY === 1 ? '' : 's'}
+              </li>
+              <li>
+                {layout.pageCountX} column{layout.pageCountX === 1 ? '' : 's'}
+              </li>
+            </ul>
+          </div>
+          <div className="visual-panel__actions">
+            <label className="print-option">
+              <input
+                type="checkbox"
+                checked={skipEmptyPages}
+                onChange={(event) => setSkipEmptyPages(event.target.checked)}
+              />
+              <span>Skip Empty Pages In PDF</span>
+            </label>
+            <a className="print-button print-button--secondary" href={graphPageUrl}>
+              Back To Graph
+            </a>
+            <button
+              type="button"
+              className="print-button"
+              onClick={handleDownloadPdf}
+              disabled={isExporting}
+            >
+              {isExporting && exportProgress
+                ? `Preparing PDF (${exportProgressPercent}%)...`
+                : isExporting
+                  ? 'Preparing PDF...'
+                  : 'Download PDF'}
+            </button>
+          </div>
+        </div>
         {exportError ? (
-          <p className="print-help__error" role="alert">
+          <p className="print-preview-panel__error" role="alert">
             {exportError}
           </p>
         ) : null}
-      </section>
-
-      <section className="print-preview-panel">
         <section
           ref={previewPagesRef}
           className="print-pages"

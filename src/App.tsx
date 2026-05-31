@@ -36,6 +36,11 @@ const nodeTypes = {
   family: FamilyNode,
 };
 
+const INITIAL_SEARCH_PANEL_POSITION = {
+  x: 64,
+  y: 14,
+};
+
 export default function App() {
   const [treeState, setTreeState] = useState(() => loadInitialFamilyTreeState());
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -47,10 +52,9 @@ export default function App() {
   const [isDraggingSearch, setIsDraggingSearch] = useState(false);
   const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(null);
   const [searchHighlightKey, setSearchHighlightKey] = useState(0);
-  const [searchPanelPosition, setSearchPanelPosition] = useState({
-    x: 64,
-    y: 14,
-  });
+  const [searchPanelPosition, setSearchPanelPosition] = useState(() => ({
+    ...INITIAL_SEARCH_PANEL_POSITION,
+  }));
   const [searchTerm, setSearchTerm] = useState('');
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [reactFlowInstance, setReactFlowInstance] =
@@ -97,6 +101,7 @@ export default function App() {
   );
   const isPrintView =
     new URLSearchParams(window.location.search).get('view') === 'print';
+  const liveNormalizedSearchTerm = searchTerm.trim().toLowerCase();
   const normalizedSearchTerm = deferredSearchTerm.trim().toLowerCase();
   const searchMatches = useMemo(() => {
     if (normalizedSearchTerm.length < 3) {
@@ -127,6 +132,30 @@ export default function App() {
   useEffect(() => {
     setCurrentMatchIndex(0);
   }, [currentTree.tree.id]);
+
+  useEffect(() => {
+    if (!reactFlowInstance || isPrintView) {
+      return;
+    }
+
+    let fitViewHandle: number | null = null;
+    const renderHandle = window.requestAnimationFrame(() => {
+      fitViewHandle = window.requestAnimationFrame(() => {
+        void reactFlowInstance.fitView({
+          padding: 0.2,
+          duration: 420,
+        });
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(renderHandle);
+
+      if (fitViewHandle !== null) {
+        window.cancelAnimationFrame(fitViewHandle);
+      }
+    };
+  }, [currentTree, isPrintView, reactFlowInstance]);
 
   useEffect(() => {
     if (!isSearchOpen) {
@@ -214,7 +243,12 @@ export default function App() {
   }, [isDraggingSearch]);
 
   useEffect(() => {
-    if (!reactFlowInstance || !activeMatch) {
+    if (
+      !reactFlowInstance ||
+      !activeMatch ||
+      liveNormalizedSearchTerm.length < 3 ||
+      !activeMatch.displayName.toLowerCase().includes(liveNormalizedSearchTerm)
+    ) {
       return;
     }
 
@@ -261,6 +295,7 @@ export default function App() {
     graph.dimensions.personHeight,
     graph.dimensions.personWidth,
     graph.nodes,
+    liveNormalizedSearchTerm,
     reactFlowInstance,
   ]);
 
@@ -309,8 +344,21 @@ export default function App() {
   }
 
   function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
-    setSearchTerm(event.target.value);
+    const nextSearchTerm = event.target.value;
+
+    setSearchTerm(nextSearchTerm);
     setCurrentMatchIndex(0);
+
+    if (nextSearchTerm.trim().length >= 3) {
+      return;
+    }
+
+    if (searchHighlightTimeoutRef.current !== null) {
+      window.clearTimeout(searchHighlightTimeoutRef.current);
+      searchHighlightTimeoutRef.current = null;
+    }
+
+    setHighlightedNodeId(null);
   }
 
   function cycleSearchMatch(direction: -1 | 1) {
@@ -353,6 +401,35 @@ export default function App() {
     };
     setIsDraggingSearch(true);
     event.preventDefault();
+  }
+
+  function handleSearchPositionReset() {
+    searchDragRef.current = null;
+    setIsDraggingSearch(false);
+
+    setSearchPanelPosition(getInitialSearchPanelPosition());
+  }
+
+  function getInitialSearchPanelPosition() {
+    const panelRect = searchPanelRef.current?.getBoundingClientRect();
+
+    return panelRect
+      ? clampSearchPanelPosition(
+          { ...INITIAL_SEARCH_PANEL_POSITION },
+          panelRect.width,
+          panelRect.height,
+          flowFrameRef.current,
+        )
+      : { ...INITIAL_SEARCH_PANEL_POSITION };
+  }
+
+  function isSearchPanelPositionChanged() {
+    const initialPosition = getInitialSearchPanelPosition();
+
+    return (
+      searchPanelPosition.x !== initialPosition.x ||
+      searchPanelPosition.y !== initialPosition.y
+    );
   }
 
   async function handleCopyPreview(
@@ -416,15 +493,12 @@ export default function App() {
               aria-hidden="true"
             />
             <p className="hero__kicker">Family Tree Visualiser</p>
-            <p className="hero__tag">
-              Showing {treeState.source === 'uploaded' ? 'uploaded JSON' : 'example data'}
-            </p>
           </div>
           <h1>Family Tree Visualiser</h1>
           <p className="hero__text">
-            Start with the bundled example, then replace it with your own single
-            JSON file using the same family-tree structure. The graph and PDF
-            export update from that uploaded data immediately.
+            Turn your family history into a clear, interactive family tree.
+            Explore the example, upload your own data, and create a printable
+            PDF that brings generations together in one beautiful view.
           </p>
         </div>
       </section>
@@ -432,12 +506,11 @@ export default function App() {
       <section className="data-panel">
         <div className="data-panel__layout">
           <div className="data-panel__content">
-            <h2>Load Your Own JSON</h2>
+            <h2>Visualise Your Own Family Tree</h2>
             <p>
-              Upload one `.json` file that contains `tree`, `people`, and
-              `families`. Inside `tree`, both `title` and `rootPersonId` are
-              required. The bundled example now uses that exact same single-file
-              structure.
+              Use the example as a guide to build your own family-tree
+              JSON file. When it is ready, choose the file below to explore your
+              family in the interactive graph and create a printable PDF.
             </p>
             <div className="data-panel__actions">
               <label className="print-button" htmlFor="family-tree-upload">
@@ -465,8 +538,8 @@ export default function App() {
               {uploadFileName ? ` (${uploadFileName})` : ''}
             </p>
             <p className="data-panel__notice">
-              The bundled example comes from `data-example/family-tree.json`.
-              Your uploaded JSON only changes the current browser session.
+              Your file stays private: it is read locally and kept only in this
+              browser session. It is not uploaded to a server.
             </p>
             {uploadError ? (
               <p className="data-panel__error" role="alert">
@@ -478,7 +551,7 @@ export default function App() {
           <div className="format-preview">
             <details className="format-preview__section">
               <summary>
-                <span>Bundled Example File Preview</span>
+                <span>Example File Preview</span>
                 <span className="format-preview__summary-actions">
                   <button
                     type="button"
@@ -562,15 +635,22 @@ export default function App() {
       </section>
 
       <section className="canvas-panel">
-        <div className="canvas-panel__header">
+        <div className="visual-panel__header">
           <div>
-            <h2>Interactive Graph</h2>
-            <p>
-              {currentTree.people.length} people, {currentTree.families.length}{' '}
-              family groups, root person {rootPerson?.displayName ?? 'unknown'}
-            </p>
+            <div className="visual-panel__title">
+              <h2>Interactive Graph</h2>
+              <p className="hero__tag">
+                Showing{' '}
+                {treeState.source === 'uploaded' ? 'uploaded JSON' : 'example data'}
+              </p>
+            </div>
+            <ul className="visual-panel__stats">
+              <li>Root person: {rootPerson?.displayName ?? 'unknown'}</li>
+              <li>{currentTree.people.length} people</li>
+              <li>{currentTree.families.length} family groups</li>
+            </ul>
           </div>
-          <div className="canvas-panel__actions">
+          <div className="visual-panel__actions">
             <a className="print-button" href={printLayoutUrl.toString()}>
               Open PDF Export
             </a>
@@ -636,6 +716,17 @@ export default function App() {
                   <p className="graph-search__label">Search People</p>
                   <p className="graph-search__hint">Drag to move</p>
                 </div>
+                {isSearchPanelPositionChanged() ? (
+                  <button
+                    type="button"
+                    className="graph-search__reset-button"
+                    title="Reset search panel position"
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onClick={handleSearchPositionReset}
+                  >
+                    Reset
+                  </button>
+                ) : null}
               </div>
               <div className="graph-search__controls">
                 <input
