@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Edge } from '@xyflow/react';
 import { PersonCard } from '../components/PersonCard';
+import { SiteFooter } from '../components/SiteFooter';
+import { SiteHeader } from '../components/SiteHeader';
 import type { FamilyTreeData } from '../lib/familyTree';
 import type { FamilyTreeGraphNode, PersonNodeData } from '../lib/familyTreeGraph';
 import { downloadFamilyTreePdf } from '../lib/familyTreePdf';
@@ -442,18 +444,11 @@ export function PrintTreeView({
   }
 
   return (
-    <main className="print-view">
+    <div className="print-view">
+      <SiteHeader />
+      <main className="page-content">
       <header className="print-toolbar">
         <div>
-          <div className="hero__eyebrow">
-            <img
-              className="hero__mark"
-              src={`${import.meta.env.BASE_URL}fallen-leaf.png`}
-              alt=""
-              aria-hidden="true"
-            />
-            <p className="hero__kicker">Family Tree Visualiser</p>
-          </div>
           <h1 className="print-toolbar__title">PDF Export</h1>
           <p className="print-toolbar__meta">
             Preview your family tree as printable A4 sheets. Download the PDF, print the pages, and align them edge to edge to create a wall-sized family tree.
@@ -529,6 +524,8 @@ export function PrintTreeView({
           {exportPageRenderData.map((pageData) => renderPage(pageData, 'export'))}
         </section>
       ) : null}
-    </main>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

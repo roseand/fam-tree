@@ -26,6 +26,8 @@ import {
   uploadFormatDocumentation,
 } from './lib/familyTree';
 import { JsonCodeBlock } from './components/JsonCodeBlock';
+import { SiteFooter } from './components/SiteFooter';
+import { SiteHeader } from './components/SiteHeader';
 import { buildFamilyTreeGraph } from './lib/familyTreeGraph';
 import { FamilyNode } from './nodes/FamilyNode';
 import { PersonNode } from './nodes/PersonNode';
@@ -482,18 +484,11 @@ export default function App() {
               }: ${activeMatch?.displayName ?? 'unknown'}`;
 
   return (
-    <main className="app-shell">
+    <div className="app-shell">
+      <SiteHeader />
+      <main className="page-content">
       <section className="hero">
         <div>
-          <div className="hero__eyebrow">
-            <img
-              className="hero__mark"
-              src={`${import.meta.env.BASE_URL}fallen-leaf.png`}
-              alt=""
-              aria-hidden="true"
-            />
-            <p className="hero__kicker">Family Tree Visualiser</p>
-          </div>
           <h1>Family Tree Visualiser</h1>
           <p className="hero__text">
             Explore your family history in a clear, interactive tree. Upload your own data and create a printable PDF that brings generations together in one view.
@@ -781,7 +776,9 @@ export default function App() {
           </ReactFlow>
         </div>
       </section>
-    </main>
+      </main>
+      <SiteFooter />
+    </div>
     );
   }
 

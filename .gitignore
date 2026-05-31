@@ -4,6 +4,9 @@ build/
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
+.env
+.env.local
+.env.*.local
 .vscode/
 .DS_Store
 Thumbs.db
