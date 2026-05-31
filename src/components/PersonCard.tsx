@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
+import type { Translations } from '../i18n/types';
 import type { PersonNodeData } from '../lib/familyTreeGraph';
 
 function parseExactDate(value: string) {
@@ -67,7 +69,10 @@ function getAgeAtDate(
   return age >= 0 ? age : null;
 }
 
-function getAgeSuffix(person: PersonNodeData['person']) {
+function getAgeSuffix(
+  person: PersonNodeData['person'],
+  messages: Translations['personCard'],
+) {
   const isDeceased = isConsideredDeceased(person);
 
   if (person.birth.date && person.death.date) {
@@ -93,7 +98,7 @@ function getAgeSuffix(person: PersonNodeData['person']) {
 
     const age = deathYear - birthYear;
 
-    return age >= 0 ? ` (ca ${age})` : null;
+    return age >= 0 ? ` (${messages.approximateAge(age)})` : null;
   }
 
   if (
@@ -118,7 +123,7 @@ function getAgeSuffix(person: PersonNodeData['person']) {
 
     const age = deathYear - birthYear;
 
-    return age >= 0 ? ` (ca ${age})` : null;
+    return age >= 0 ? ` (${messages.approximateAge(age)})` : null;
   }
 
   if (!isDeceased && person.birth.date) {
@@ -142,7 +147,7 @@ function getAgeSuffix(person: PersonNodeData['person']) {
 
     const age = new Date().getFullYear() - birthYear;
 
-    return age >= 0 ? ` (ca ${age})` : null;
+    return age >= 0 ? ` (${messages.approximateAge(age)})` : null;
   }
 
   return null;
@@ -152,8 +157,9 @@ function formatLifeEvent(
   date: string | null,
   place: string | null,
   dateText: string | null,
+  messages: Translations['personCard'],
 ) {
-  const resolvedDate = dateText ?? date ?? 'Unknown date';
+  const resolvedDate = dateText ?? date ?? messages.unknownDate;
   const resolvedPlace = place?.trim();
 
   return resolvedPlace ? `${resolvedDate} - ${resolvedPlace}` : resolvedDate;
@@ -186,8 +192,9 @@ export function PersonCard({
   bottomAdornment,
   className,
 }: PersonCardProps) {
+  const { translations } = useLanguage();
   const { person } = data;
-  const ageSuffix = getAgeSuffix(person);
+  const ageSuffix = getAgeSuffix(person, translations.personCard);
   const namePrefix = isConsideredDeceased(person) ? '\u2020 ' : '';
   const resolvedClassName = className
     ? `${getPersonCardClassName(data)} ${className}`
@@ -207,6 +214,7 @@ export function PersonCard({
             person.birth.date,
             person.birth.place,
             person.birth.dateText,
+            translations.personCard,
           )}
         </p>
       ) : null}
@@ -216,6 +224,7 @@ export function PersonCard({
             person.death.date,
             person.death.place,
             person.death.dateText,
+            translations.personCard,
           )}
         </p>
       ) : null}

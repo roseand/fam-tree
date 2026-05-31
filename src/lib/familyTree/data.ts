@@ -1,4 +1,6 @@
 import exampleFamilyTreeJson from '../../../data-example/family-tree.json';
+import { en } from '../../i18n/translations/en';
+import type { FamilyTreeValidationMessages } from '../../i18n/types';
 import type {
   FamilyTreeData,
   FamilyTreeDataSource,
@@ -8,6 +10,7 @@ import type {
 } from './types';
 
 const UPLOADED_TREE_STORAGE_KEY = 'family-tree-uploaded-json-v1';
+const DEFAULT_VALIDATION_MESSAGES = en.upload.validation;
 
 type FamilyTreeInput = {
   version?: unknown;
@@ -20,19 +23,6 @@ type FamilyTreeInputTree = {
   id?: unknown;
   title?: unknown;
   rootPersonId?: unknown;
-};
-
-export type UploadFormatDocumentationItem = {
-  keyPath: string;
-  type: string;
-  required: 'Yes' | 'No';
-  acceptedValues?: string;
-  notes?: string;
-};
-
-export type UploadFormatDocumentationSection = {
-  title: string;
-  items: UploadFormatDocumentationItem[];
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -56,25 +46,26 @@ function slugify(value: string) {
     .slice(0, 80);
 }
 
-function fileNameToTitle(fileName: string) {
+function fileNameToTitle(fileName: string, fallbackTitle: string) {
   const baseName = fileName.replace(/\.json$/i, '').trim();
 
-  return baseName || 'Uploaded Family Tree';
+  return baseName || fallbackTitle;
 }
 
 function parseLifeEvent(
   value: unknown,
   label: string,
+  messages: FamilyTreeValidationMessages,
 ): FamilyTreePerson['birth'] | FamilyTreePerson['death'] {
   if (!isRecord(value)) {
-    throw new Error(`${label} must be an object.`);
+    throw new Error(messages.lifeEventMustBeObject(label));
   }
 
   const { date, dateText, place } = value;
 
   if (!isNullableString(date) || !isNullableString(dateText) || !isNullableString(place)) {
     throw new Error(
-      `${label} must use string-or-null values for date, dateText, and place.`,
+      messages.lifeEventValuesMustBeNullableStrings(label),
     );
   }
 
@@ -85,50 +76,58 @@ function parseLifeEvent(
   };
 }
 
-function parsePerson(value: unknown, index: number): FamilyTreePerson {
+function parsePerson(
+  value: unknown,
+  index: number,
+  messages: FamilyTreeValidationMessages,
+): FamilyTreePerson {
   if (!isRecord(value)) {
-    throw new Error(`people[${index}] must be an object.`);
+    throw new Error(messages.personMustBeObject(index));
   }
 
   const { id, displayName, sex, birth, death, notes } = value;
 
   if (typeof id !== 'string' || !id.trim()) {
-    throw new Error(`people[${index}].id must be a non-empty string.`);
+    throw new Error(messages.personIdMustBeNonEmpty(index));
   }
 
   if (typeof displayName !== 'string' || !displayName.trim()) {
-    throw new Error(`people[${index}].displayName must be a non-empty string.`);
+    throw new Error(messages.personDisplayNameMustBeNonEmpty(index));
   }
 
   if (!isSex(sex)) {
     throw new Error(
-      `people[${index}].sex must be "female", "male", or "unknown".`,
+      messages.personSexMustBeValid(index),
     );
   }
 
   if (!isNullableString(notes)) {
-    throw new Error(`people[${index}].notes must be a string or null.`);
+    throw new Error(messages.personNotesMustBeNullableString(index));
   }
 
   return {
     id: id.trim(),
     displayName: displayName.trim(),
     sex,
-    birth: parseLifeEvent(birth, `people[${index}].birth`),
-    death: parseLifeEvent(death, `people[${index}].death`),
+    birth: parseLifeEvent(birth, `people[${index}].birth`, messages),
+    death: parseLifeEvent(death, `people[${index}].death`, messages),
     notes,
   };
 }
 
-function parseFamily(value: unknown, index: number): FamilyTreeFamily {
+function parseFamily(
+  value: unknown,
+  index: number,
+  messages: FamilyTreeValidationMessages,
+): FamilyTreeFamily {
   if (!isRecord(value)) {
-    throw new Error(`families[${index}] must be an object.`);
+    throw new Error(messages.familyMustBeObject(index));
   }
 
   const { id, parentIds, childIds } = value;
 
   if (typeof id !== 'string' || !id.trim()) {
-    throw new Error(`families[${index}].id must be a non-empty string.`);
+    throw new Error(messages.familyIdMustBeNonEmpty(index));
   }
 
   if (
@@ -136,7 +135,7 @@ function parseFamily(value: unknown, index: number): FamilyTreeFamily {
     parentIds.some((parentId) => typeof parentId !== 'string' || !parentId.trim())
   ) {
     throw new Error(
-      `families[${index}].parentIds must be an array of non-empty strings.`,
+      messages.familyParentIdsMustBeValid(index),
     );
   }
 
@@ -145,7 +144,7 @@ function parseFamily(value: unknown, index: number): FamilyTreeFamily {
     childIds.some((childId) => typeof childId !== 'string' || !childId.trim())
   ) {
     throw new Error(
-      `families[${index}].childIds must be an array of non-empty strings.`,
+      messages.familyChildIdsMustBeValid(index),
     );
   }
 
@@ -165,12 +164,16 @@ function deriveRootPersonId(
   return people.find((person) => !childIds.has(person.id))?.id ?? people[0]?.id;
 }
 
-function validateUniqueIds<T extends { id: string }>(items: T[], label: string) {
+function validateUniqueIds<T extends { id: string }>(
+  items: T[],
+  label: 'person' | 'family',
+  messages: FamilyTreeValidationMessages,
+) {
   const seenIds = new Set<string>();
 
   for (const item of items) {
     if (seenIds.has(item.id)) {
-      throw new Error(`Duplicate ${label} id "${item.id}" was found.`);
+      throw new Error(messages.duplicateId(label, item.id));
     }
 
     seenIds.add(item.id);
@@ -180,6 +183,7 @@ function validateUniqueIds<T extends { id: string }>(items: T[], label: string) 
 function validateFamilyReferences(
   people: FamilyTreePerson[],
   families: FamilyTreeFamily[],
+  messages: FamilyTreeValidationMessages,
 ) {
   const peopleIds = new Set(people.map((person) => person.id));
 
@@ -187,7 +191,7 @@ function validateFamilyReferences(
     for (const parentId of family.parentIds) {
       if (!peopleIds.has(parentId)) {
         throw new Error(
-          `Family "${family.id}" references missing parent "${parentId}".`,
+          messages.missingParentReference(family.id, parentId),
         );
       }
     }
@@ -195,7 +199,7 @@ function validateFamilyReferences(
     for (const childId of family.childIds) {
       if (!peopleIds.has(childId)) {
         throw new Error(
-          `Family "${family.id}" references missing child "${childId}".`,
+          messages.missingChildReference(family.id, childId),
         );
       }
     }
@@ -208,10 +212,11 @@ function buildFamilyTreeData(
   inputTree: FamilyTreeInputTree | undefined,
   fallbackTitle: string,
   version: unknown,
+  messages: FamilyTreeValidationMessages,
 ): FamilyTreeData {
-  validateUniqueIds(people, 'person');
-  validateUniqueIds(families, 'family');
-  validateFamilyReferences(people, families);
+  validateUniqueIds(people, 'person', messages);
+  validateUniqueIds(families, 'family', messages);
+  validateFamilyReferences(people, families, messages);
 
   const rootPersonId =
     typeof inputTree?.rootPersonId === 'string' && inputTree.rootPersonId.trim()
@@ -219,11 +224,11 @@ function buildFamilyTreeData(
       : deriveRootPersonId(people, families);
 
   if (!rootPersonId) {
-    throw new Error('The family tree must contain at least one person.');
+    throw new Error(messages.treeMustContainPerson);
   }
 
   if (!people.some((person) => person.id === rootPersonId)) {
-    throw new Error(`The rootPersonId "${rootPersonId}" was not found in people.`);
+    throw new Error(messages.rootPersonNotFound(rootPersonId));
   }
 
   const title =
@@ -250,34 +255,46 @@ function buildFamilyTreeData(
 function parseFamilyTreeInput(
   input: FamilyTreeInput,
   fallbackTitle: string,
+  messages: FamilyTreeValidationMessages,
 ): FamilyTreeData {
   if (!isRecord(input.tree)) {
-    throw new Error('The uploaded JSON must include a tree object.');
+    throw new Error(messages.uploadedJsonMustIncludeTree);
   }
 
   if (!Array.isArray(input.people)) {
-    throw new Error('The uploaded JSON must include a people array.');
+    throw new Error(messages.uploadedJsonMustIncludePeople);
   }
 
   if (!Array.isArray(input.families)) {
-    throw new Error('The uploaded JSON must include a families array.');
+    throw new Error(messages.uploadedJsonMustIncludeFamilies);
   }
   const tree = input.tree as FamilyTreeInputTree;
 
   if (typeof tree.title !== 'string' || !tree.title.trim()) {
-    throw new Error('The uploaded JSON must include tree.title as a non-empty string.');
+    throw new Error(messages.uploadedJsonMustIncludeTitle);
   }
 
   if (typeof tree.rootPersonId !== 'string' || !tree.rootPersonId.trim()) {
     throw new Error(
-      'The uploaded JSON must include tree.rootPersonId as a non-empty string.',
+      messages.uploadedJsonMustIncludeRootPersonId,
     );
   }
 
-  const people = input.people.map(parsePerson);
-  const families = input.families.map(parseFamily);
+  const people = input.people.map((person, index) =>
+    parsePerson(person, index, messages),
+  );
+  const families = input.families.map((family, index) =>
+    parseFamily(family, index, messages),
+  );
 
-  return buildFamilyTreeData(people, families, tree, fallbackTitle, input.version);
+  return buildFamilyTreeData(
+    people,
+    families,
+    tree,
+    fallbackTitle,
+    input.version,
+    messages,
+  );
 }
 
 function readStoredUploadedTree() {
@@ -312,6 +329,7 @@ function writeStoredUploadedTree(value: string | null) {
 export const exampleFamilyTreeData = parseFamilyTreeInput(
   exampleFamilyTreeJson as FamilyTreeInput,
   'Family Tree Example',
+  DEFAULT_VALIDATION_MESSAGES,
 );
 
 export const exampleFamilyTreePreview = JSON.stringify(
@@ -325,181 +343,35 @@ export const exampleFamilyTreePreview = JSON.stringify(
   2,
 );
 
-export const uploadFormatDocumentation: UploadFormatDocumentationSection[] = [
-  {
-    title: 'Top-Level Object',
-    items: [
-      {
-        keyPath: 'version',
-        type: 'string',
-        required: 'No',
-        acceptedValues: 'Any non-empty string, typically "1.0".',
-        notes: 'If omitted, the app falls back to "1.0".',
-      },
-      {
-        keyPath: 'tree',
-        type: 'object',
-        required: 'Yes',
-        notes: 'Defines metadata and the visual root person, and must include title and rootPersonId.',
-      },
-      {
-        keyPath: 'people',
-        type: 'array<object>',
-        required: 'Yes',
-        notes: 'Each item must be a full person object.',
-      },
-      {
-        keyPath: 'families',
-        type: 'array<object>',
-        required: 'Yes',
-        notes: 'Each item must be a full family relationship object.',
-      },
-    ],
-  },
-  {
-    title: 'tree Object',
-    items: [
-      {
-        keyPath: 'tree.id',
-        type: 'string',
-        required: 'No',
-        acceptedValues: 'Any non-empty string.',
-        notes: 'If omitted, it is derived from the tree title.',
-      },
-      {
-        keyPath: 'tree.title',
-        type: 'string',
-        required: 'Yes',
-        acceptedValues: 'Any non-empty string.',
-        notes: 'Used in the UI and as the exported PDF filename base.',
-      },
-      {
-        keyPath: 'tree.rootPersonId',
-        type: 'string',
-        required: 'Yes',
-        acceptedValues: 'Must match a person id from people[].',
-        notes: 'Controls the visual root and must point to an existing person.',
-      },
-    ],
-  },
-  {
-    title: 'Person Object',
-    items: [
-      {
-        keyPath: 'people[].id',
-        type: 'string',
-        required: 'Yes',
-        acceptedValues: 'Unique non-empty string.',
-        notes: 'All person ids must be unique across the file.',
-      },
-      {
-        keyPath: 'people[].displayName',
-        type: 'string',
-        required: 'Yes',
-        acceptedValues: 'Any non-empty string.',
-      },
-      {
-        keyPath: 'people[].sex',
-        type: 'string',
-        required: 'Yes',
-        acceptedValues: '"female", "male", or "unknown".',
-      },
-      {
-        keyPath: 'people[].birth',
-        type: 'object',
-        required: 'Yes',
-        notes: 'Must contain date, dateText, and place keys even when the values are null.',
-      },
-      {
-        keyPath: 'people[].death',
-        type: 'object',
-        required: 'Yes',
-        notes: 'Must contain date, dateText, and place keys even when the values are null.',
-      },
-      {
-        keyPath: 'people[].notes',
-        type: 'string | null',
-        required: 'Yes',
-        notes: 'Use null if there are no notes.',
-      },
-    ],
-  },
-  {
-    title: 'birth / death Event Object',
-    items: [
-      {
-        keyPath: 'people[].birth.date / people[].death.date',
-        type: 'string | null',
-        required: 'Yes',
-        acceptedValues: 'Exact dates should use dd.mm.yyyy.',
-      },
-      {
-        keyPath: 'people[].birth.dateText / people[].death.dateText',
-        type: 'string | null',
-        required: 'Yes',
-        acceptedValues: 'Free text such as "ca 1924".',
-        notes: 'Use this when the exact date is not known.',
-      },
-      {
-        keyPath: 'people[].birth.place / people[].death.place',
-        type: 'string | null',
-        required: 'Yes',
-        acceptedValues: 'Any place text or null.',
-      },
-    ],
-  },
-  {
-    title: 'Family Object',
-    items: [
-      {
-        keyPath: 'families[].id',
-        type: 'string',
-        required: 'Yes',
-        acceptedValues: 'Unique non-empty string.',
-      },
-      {
-        keyPath: 'families[].parentIds',
-        type: 'array<string>',
-        required: 'Yes',
-        acceptedValues: 'Person ids that already exist in people[].',
-        notes: 'Every referenced id must match an existing person.',
-      },
-      {
-        keyPath: 'families[].childIds',
-        type: 'array<string>',
-        required: 'Yes',
-        acceptedValues: 'Person ids that already exist in people[].',
-        notes: 'Every referenced id must match an existing person.',
-      },
-    ],
-  },
-];
-
 export function getExampleFamilyTreeState(): FamilyTreeState {
   return {
     data: exampleFamilyTreeData,
     source: 'example',
-    sourceLabel: 'example data',
   };
 }
 
 export function parseUploadedFamilyTreeJson(
   jsonText: string,
   fileName = 'uploaded.json',
+  messages = DEFAULT_VALIDATION_MESSAGES,
 ) {
   let parsed: unknown;
 
   try {
     parsed = JSON.parse(jsonText);
   } catch {
-    throw new Error('The selected file is not valid JSON.');
+    throw new Error(messages.selectedFileMustBeValidJson);
   }
 
   if (!isRecord(parsed)) {
-    throw new Error('The uploaded JSON must be an object.');
+    throw new Error(messages.uploadedJsonMustBeObject);
   }
 
-  return parseFamilyTreeInput(parsed as FamilyTreeInput, fileNameToTitle(fileName));
+  return parseFamilyTreeInput(
+    parsed as FamilyTreeInput,
+    fileNameToTitle(fileName, messages.uploadedTreeTitle),
+    messages,
+  );
 }
 
 export function persistUploadedFamilyTree(data: FamilyTreeData) {
@@ -516,9 +388,11 @@ export function loadInitialFamilyTreeState(): FamilyTreeState {
   if (storedJson) {
     try {
       return {
-        data: parseUploadedFamilyTreeJson(storedJson, 'Uploaded Family Tree'),
+        data: parseUploadedFamilyTreeJson(
+          storedJson,
+          DEFAULT_VALIDATION_MESSAGES.uploadedTreeTitle,
+        ),
         source: 'uploaded',
-        sourceLabel: 'uploaded JSON',
       };
     } catch {
       clearPersistedUploadedFamilyTree();

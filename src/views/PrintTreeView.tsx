@@ -3,7 +3,8 @@ import type { Edge } from '@xyflow/react';
 import { PersonCard } from '../components/PersonCard';
 import { SiteFooter } from '../components/SiteFooter';
 import { SiteHeader } from '../components/SiteHeader';
-import type { FamilyTreeData } from '../lib/familyTree';
+import { useLanguage } from '../i18n/LanguageContext';
+import type { FamilyTreeData, FamilyTreeDataSource } from '../lib/familyTree';
 import type { FamilyTreeGraphNode, PersonNodeData } from '../lib/familyTreeGraph';
 import { downloadFamilyTreePdf } from '../lib/familyTreePdf';
 import {
@@ -18,7 +19,7 @@ type PrintTreeViewProps = {
     edges: Edge[];
   };
   treeData: FamilyTreeData;
-  dataSourceLabel: string;
+  dataSource: FamilyTreeDataSource;
 };
 
 function getGraphPageUrl() {
@@ -124,8 +125,9 @@ function buildPageLocalEdgePath(
 export function PrintTreeView({
   graph,
   treeData,
-  dataSourceLabel,
+  dataSource,
 }: PrintTreeViewProps) {
+  const { translations } = useLanguage();
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
   const [exportProgress, setExportProgress] = useState<{
@@ -242,6 +244,10 @@ export function PrintTreeView({
     : null;
 
   useEffect(() => {
+    setExportError(null);
+  }, [translations.language]);
+
+  useEffect(() => {
     const previewContainer = previewPagesRef.current;
 
     if (!previewContainer) {
@@ -287,12 +293,13 @@ export function PrintTreeView({
         onProgress: (completed, total) => {
           setExportProgress({ completed, total });
         },
+        messages: translations.pdf.errors,
       });
     } catch (error) {
       setExportError(
         error instanceof Error
           ? error.message
-          : 'PDF export failed. Please try again.',
+          : translations.pdf.exportFailed,
       );
     } finally {
       setIsExporting(false);
@@ -423,8 +430,11 @@ export function PrintTreeView({
       >
         {isPreview ? null : (
           <div className="print-page__badge">
-            p{formatPageIndex(pageIndex + 1)}, r{formatPageIndex(page.row + 1)}, c
-            {formatPageIndex(page.column + 1)}
+            {translations.pdf.pageBadge(
+              formatPageIndex(pageIndex + 1),
+              formatPageIndex(page.row + 1),
+              formatPageIndex(page.column + 1),
+            )}
           </div>
         )}
         <div className="print-page__content">
@@ -449,10 +459,8 @@ export function PrintTreeView({
       <main className="page-content">
       <header className="print-toolbar">
         <div>
-          <h1 className="print-toolbar__title">PDF Export</h1>
-          <p className="print-toolbar__meta">
-            Preview your family tree as printable A4 sheets. Download the PDF, print the pages, and align them edge to edge to create a wall-sized family tree.
-          </p>
+          <h1 className="print-toolbar__title">{translations.pdf.title}</h1>
+          <p className="print-toolbar__meta">{translations.pdf.intro}</p>
         </div>
       </header>
 
@@ -460,17 +468,17 @@ export function PrintTreeView({
         <div className="visual-panel__header">
           <div>
             <div className="visual-panel__title">
-              <h2>Graph Layout Preview</h2>
-              <p className="hero__tag">Showing {dataSourceLabel}</p>
+              <h2>{translations.pdf.layoutPreview}</h2>
+              <p className="hero__tag">
+                {translations.landing.showingSource(
+                  translations.common.dataSources[dataSource],
+                )}
+              </p>
             </div>
             <ul className="visual-panel__stats">
-              <li>{layout.pageCountX * layout.pageCountY} A4 landscape pages</li>
-              <li>
-                {layout.pageCountY} row{layout.pageCountY === 1 ? '' : 's'}
-              </li>
-              <li>
-                {layout.pageCountX} column{layout.pageCountX === 1 ? '' : 's'}
-              </li>
+              <li>{translations.pdf.a4PagesCount(layout.pageCountX * layout.pageCountY)}</li>
+              <li>{translations.pdf.rowsCount(layout.pageCountY)}</li>
+              <li>{translations.pdf.columnsCount(layout.pageCountX)}</li>
             </ul>
           </div>
           <div className="visual-panel__actions">
@@ -480,10 +488,10 @@ export function PrintTreeView({
                 checked={skipEmptyPages}
                 onChange={(event) => setSkipEmptyPages(event.target.checked)}
               />
-              <span>Skip Empty Pages In PDF</span>
+              <span>{translations.pdf.skipEmptyPages}</span>
             </label>
             <a className="print-button print-button--secondary" href={graphPageUrl}>
-              Back To Graph
+              {translations.pdf.backToGraph}
             </a>
             <button
               type="button"
@@ -492,10 +500,10 @@ export function PrintTreeView({
               disabled={isExporting}
             >
               {isExporting && exportProgress
-                ? `Preparing PDF (${exportProgressPercent}%)...`
+                ? translations.pdf.preparingWithProgress(exportProgressPercent ?? 0)
                 : isExporting
-                  ? 'Preparing PDF...'
-                  : 'Download PDF'}
+                  ? translations.pdf.preparing
+                  : translations.pdf.download}
             </button>
           </div>
         </div>

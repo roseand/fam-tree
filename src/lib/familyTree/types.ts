@@ -37,5 +37,4 @@ export type FamilyTreeDataSource = 'example' | 'uploaded';
 export type FamilyTreeState = {
   data: FamilyTreeData;
   source: FamilyTreeDataSource;
-  sourceLabel: string;
 };

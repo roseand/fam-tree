@@ -1,10 +1,14 @@
 import { PDFDocument } from 'pdf-lib';
+import { en } from '../i18n/translations/en';
+import type { PdfExportMessages } from '../i18n/types';
 import { PRINT_PAGE_HEIGHT_PT, PRINT_PAGE_WIDTH_PT } from './familyTreePrint';
 
 const EXPORT_SCALE = 1.5;
+const DEFAULT_PDF_EXPORT_MESSAGES = en.pdf.errors;
 
 type DownloadFamilyTreePdfOptions = {
   onProgress?: (completedPages: number, totalPages: number) => void;
+  messages?: PdfExportMessages;
 };
 
 function slugify(value: string) {
@@ -105,21 +109,25 @@ function cloneExportPage(
   return clonedPage;
 }
 
-function loadImage(url: string) {
+function loadImage(url: string, messages: PdfExportMessages) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
 
     image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error('Failed to render preview page.'));
+    image.onerror = () => reject(new Error(messages.failedToRenderPreviewPage));
     image.src = url;
   });
 }
 
-function canvasToBlob(canvas: HTMLCanvasElement, type: string) {
+function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  type: string,
+  messages: PdfExportMessages,
+) {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (!blob) {
-        reject(new Error('Failed to create the PDF page image.'));
+        reject(new Error(messages.failedToCreatePageImage));
         return;
       }
 
@@ -128,7 +136,10 @@ function canvasToBlob(canvas: HTMLCanvasElement, type: string) {
   });
 }
 
-async function renderPreviewPageToPng(pageElement: HTMLElement) {
+async function renderPreviewPageToPng(
+  pageElement: HTMLElement,
+  messages: PdfExportMessages,
+) {
   if ('fonts' in document) {
     await document.fonts.ready;
   }
@@ -166,12 +177,12 @@ async function renderPreviewPageToPng(pageElement: HTMLElement) {
   )}`;
 
   try {
-    const image = await loadImage(svgUrl);
+    const image = await loadImage(svgUrl, messages);
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
     if (!context) {
-      throw new Error('Failed to prepare the PDF page canvas.');
+      throw new Error(messages.failedToPreparePageCanvas);
     }
 
     canvas.width = width * EXPORT_SCALE;
@@ -181,7 +192,7 @@ async function renderPreviewPageToPng(pageElement: HTMLElement) {
     context.fillRect(0, 0, width, height);
     context.drawImage(image, 0, 0, width, height);
 
-    const pngBlob = await canvasToBlob(canvas, 'image/png');
+    const pngBlob = await canvasToBlob(canvas, 'image/png', messages);
     const pngBuffer = await pngBlob.arrayBuffer();
 
     canvas.width = 0;
@@ -192,7 +203,7 @@ async function renderPreviewPageToPng(pageElement: HTMLElement) {
     throw new Error(
       error instanceof Error
         ? error.message
-        : 'Failed to capture the preview page for PDF export.',
+        : messages.failedToCapturePreviewPage,
     );
   }
 }
@@ -206,8 +217,10 @@ export async function downloadFamilyTreePdf(
   title: string,
   options: DownloadFamilyTreePdfOptions = {},
 ) {
+  const messages = options.messages ?? DEFAULT_PDF_EXPORT_MESSAGES;
+
   if (!pageElements.length) {
-    throw new Error('No preview pages were available to export.');
+    throw new Error(messages.noPreviewPages);
   }
 
   const pdfDocument = await PDFDocument.create();
@@ -217,12 +230,12 @@ export async function downloadFamilyTreePdf(
     let pngBuffer: ArrayBuffer;
 
     try {
-      pngBuffer = await renderPreviewPageToPng(pageElement);
+      pngBuffer = await renderPreviewPageToPng(pageElement, messages);
     } catch (error) {
       const baseMessage =
-        error instanceof Error ? error.message : 'Unknown export failure.';
+        error instanceof Error ? error.message : messages.unknownExportFailure;
 
-      throw new Error(`PDF export failed on page ${pageIndex + 1}: ${baseMessage}`);
+      throw new Error(messages.exportFailedOnPage(pageIndex + 1, baseMessage));
     }
 
     const pageImage = await pdfDocument.embedPng(pngBuffer);

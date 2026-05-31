@@ -176,6 +176,11 @@ body {
   background: rgba(219, 234, 254, 0.72);
 }
 
+.site-header__language-option[aria-pressed="true"] {
+  background: rgba(219, 234, 254, 0.92);
+  color: #315d91;
+}
+
 .site-header__language-icon {
   width: 28px;
   height: 20px;

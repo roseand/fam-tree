@@ -5,11 +5,6 @@ export {
   loadInitialFamilyTreeState,
   parseUploadedFamilyTreeJson,
   persistUploadedFamilyTree,
-  uploadFormatDocumentation,
-} from './data';
-export type {
-  UploadFormatDocumentationItem,
-  UploadFormatDocumentationSection,
 } from './data';
 export type {
   FamilyTreeData,

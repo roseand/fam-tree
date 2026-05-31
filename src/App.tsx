@@ -23,11 +23,11 @@ import {
   loadInitialFamilyTreeState,
   parseUploadedFamilyTreeJson,
   persistUploadedFamilyTree,
-  uploadFormatDocumentation,
 } from './lib/familyTree';
 import { JsonCodeBlock } from './components/JsonCodeBlock';
 import { SiteFooter } from './components/SiteFooter';
 import { SiteHeader } from './components/SiteHeader';
+import { useLanguage } from './i18n/LanguageContext';
 import { buildFamilyTreeGraph } from './lib/familyTreeGraph';
 import { FamilyNode } from './nodes/FamilyNode';
 import { PersonNode } from './nodes/PersonNode';
@@ -44,6 +44,7 @@ const INITIAL_SEARCH_PANEL_POSITION = {
 };
 
 export default function App() {
+  const { translations } = useLanguage();
   const [treeState, setTreeState] = useState(() => loadInitialFamilyTreeState());
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadFileName, setUploadFileName] = useState<string | null>(null);
@@ -136,6 +137,10 @@ export default function App() {
   }, [currentTree.tree.id]);
 
   useEffect(() => {
+    setUploadError(null);
+  }, [translations.language]);
+
+  useEffect(() => {
     if (!reactFlowInstance || isPrintView) {
       return;
     }
@@ -171,7 +176,7 @@ export default function App() {
     return () => {
       window.cancelAnimationFrame(focusHandle);
     };
-  }, [isSearchOpen]);
+  }, [isSearchOpen, translations.language]);
 
   useEffect(() => {
     if (!isSearchOpen) {
@@ -311,25 +316,28 @@ export default function App() {
     }
 
     if (!file.name.toLowerCase().endsWith('.json')) {
-      setUploadError('Please choose a .json file.');
+      setUploadError(translations.upload.chooseJsonFileError);
       return;
     }
 
     try {
       const jsonText = await file.text();
-      const uploadedTree = parseUploadedFamilyTreeJson(jsonText, file.name);
+      const uploadedTree = parseUploadedFamilyTreeJson(
+        jsonText,
+        file.name,
+        translations.upload.validation,
+      );
 
       persistUploadedFamilyTree(uploadedTree);
       setTreeState({
         data: uploadedTree,
         source: 'uploaded',
-        sourceLabel: 'uploaded JSON',
       });
       setUploadFileName(file.name);
       setUploadError(null);
     } catch (error) {
       setUploadError(
-        error instanceof Error ? error.message : 'The JSON file could not be loaded.',
+        error instanceof Error ? error.message : translations.upload.fileCouldNotBeLoaded,
       );
     }
   }
@@ -452,7 +460,7 @@ export default function App() {
         );
       }, 1600);
     } catch {
-      setUploadError('Could not copy the preview text to the clipboard.');
+      setUploadError(translations.upload.copyFailed);
     }
   }
 
@@ -461,7 +469,7 @@ export default function App() {
       <PrintTreeView
         graph={graph}
         treeData={currentTree}
-        dataSourceLabel={treeState.sourceLabel}
+        dataSource={treeState.source}
       />
     );
   }
@@ -470,18 +478,20 @@ export default function App() {
   printLayoutUrl.searchParams.set('view', 'print');
   const searchStatus =
     normalizedSearchTerm.length === 0
-      ? 'Type at least 3 letters to search by name.'
+      ? translations.search.typeAtLeastThreeLetters
       : normalizedSearchTerm.length < 3
-        ? `Type ${3 - normalizedSearchTerm.length} more letter${
-            3 - normalizedSearchTerm.length === 1 ? '' : 's'
-          } to start searching.`
+        ? translations.search.typeMoreLetters(3 - normalizedSearchTerm.length)
         : searchMatches.length === 0
-          ? 'No matching people found.'
+          ? translations.search.noMatches
           : searchMatches.length === 1
-            ? `1 match: ${activeMatch?.displayName ?? 'unknown'}`
-            : `${searchMatches.length} matches, showing ${activeMatchIndex + 1} of ${
-                searchMatches.length
-              }: ${activeMatch?.displayName ?? 'unknown'}`;
+            ? translations.search.oneMatch(
+                activeMatch?.displayName ?? translations.common.unknown,
+              )
+            : translations.search.multipleMatches(
+                searchMatches.length,
+                activeMatchIndex + 1,
+                activeMatch?.displayName ?? translations.common.unknown,
+              );
 
   return (
     <div className="app-shell">
@@ -489,25 +499,19 @@ export default function App() {
       <main className="page-content">
       <section className="hero">
         <div>
-          <h1>Family Tree Visualiser</h1>
-          <p className="hero__text">
-            Explore your family history in a clear, interactive tree. Upload your own data and create a printable PDF that brings generations together in one view.
-          </p>
+          <h1>{translations.landing.title}</h1>
+          <p className="hero__text">{translations.landing.intro}</p>
         </div>
       </section>
 
       <section className="data-panel">
         <div className="data-panel__layout">
           <div className="data-panel__content">
-            <h2>Visualise Your Own Family Tree</h2>
-            <p>
-              Use the example as a guide to build your own family-tree
-              JSON file. When it is ready, choose the file below to explore your
-              family in the interactive graph and create a printable PDF.
-            </p>
+            <h2>{translations.landing.uploadTitle}</h2>
+            <p>{translations.landing.uploadIntro}</p>
             <div className="data-panel__actions">
               <label className="print-button" htmlFor="family-tree-upload">
-                Choose JSON File
+                {translations.landing.chooseJsonFile}
               </label>
               <input
                 id="family-tree-upload"
@@ -522,17 +526,18 @@ export default function App() {
                   className="print-button print-button--secondary"
                   onClick={handleUseExampleData}
                 >
-                  Use Example Data
+                  {translations.landing.useExampleData}
                 </button>
               ) : null}
             </div>
             <p className="data-panel__status">
-              Current tree: {currentTree.tree.title}
-              {uploadFileName ? ` (${uploadFileName})` : ''}
+              {translations.landing.currentTree(
+                currentTree.tree.title,
+                uploadFileName,
+              )}
             </p>
             <p className="data-panel__notice">
-              Your file stays private: it is read locally and kept only in this
-              browser session. It is not uploaded to a server.
+              {translations.landing.privacyNotice}
             </p>
             {uploadError ? (
               <p className="data-panel__error" role="alert">
@@ -544,7 +549,7 @@ export default function App() {
           <div className="format-preview">
             <details className="format-preview__section">
               <summary>
-                <span>Example File Preview</span>
+                <span>{translations.landing.exampleFilePreview}</span>
                 <span className="format-preview__summary-actions">
                   <button
                     type="button"
@@ -558,7 +563,9 @@ export default function App() {
                       );
                     }}
                   >
-                    {copiedPreviewKey === 'example-file' ? 'Copied' : 'Copy'}
+                    {copiedPreviewKey === 'example-file'
+                      ? translations.common.copied
+                      : translations.common.copy}
                   </button>
                   <span className="format-preview__chevron" aria-hidden="true">
                     ▸
@@ -573,7 +580,7 @@ export default function App() {
 
             <details className="format-preview__section">
               <summary>
-                <span>Upload Format Documentation</span>
+                <span>{translations.landing.uploadFormatDocumentation}</span>
                 <span className="format-preview__summary-actions">
                   <span className="format-preview__chevron" aria-hidden="true">
                     ▸
@@ -581,7 +588,7 @@ export default function App() {
                 </span>
               </summary>
               <div className="format-docs">
-                {uploadFormatDocumentation.map((section) => (
+                {translations.upload.documentation.map((section) => (
                   <section className="format-docs__section" key={section.title}>
                     <h3>{section.title}</h3>
                     <div className="format-docs__list">
@@ -594,25 +601,29 @@ export default function App() {
                             <code className="format-docs__key">{item.keyPath}</code>
                             <span
                               className={
-                                item.required === 'Yes'
+                                item.required
                                   ? 'format-docs__required format-docs__required--yes'
                                   : 'format-docs__required format-docs__required--no'
                               }
                             >
-                              {item.required === 'Yes' ? 'Required' : 'Optional'}
+                              {item.required
+                                ? translations.common.required
+                                : translations.common.optional}
                             </span>
                           </div>
                           <p className="format-docs__meta">
-                            <strong>Type:</strong> {item.type}
+                            <strong>{translations.common.type}:</strong> {item.type}
                           </p>
                           {item.acceptedValues ? (
                             <p className="format-docs__meta">
-                              <strong>Accepted:</strong> {item.acceptedValues}
+                              <strong>{translations.common.accepted}:</strong>{' '}
+                              {item.acceptedValues}
                             </p>
                           ) : null}
                           {item.notes ? (
                             <p className="format-docs__meta">
-                              <strong>Notes:</strong> {item.notes}
+                              <strong>{translations.common.notes}:</strong>{' '}
+                              {item.notes}
                             </p>
                           ) : null}
                         </article>
@@ -631,21 +642,30 @@ export default function App() {
         <div className="visual-panel__header">
           <div>
             <div className="visual-panel__title">
-              <h2>Interactive Graph</h2>
+              <h2>{translations.landing.interactiveGraph}</h2>
               <p className="hero__tag">
-                Showing{' '}
-                {treeState.source === 'uploaded' ? 'uploaded JSON' : 'example data'}
+                {translations.landing.showingSource(
+                  translations.common.dataSources[treeState.source],
+                )}
               </p>
             </div>
             <ul className="visual-panel__stats">
-              <li>Root person: {rootPerson?.displayName ?? 'unknown'}</li>
-              <li>{currentTree.people.length} people</li>
-              <li>{currentTree.families.length} family groups</li>
+              <li>
+                {translations.landing.rootPerson(
+                  rootPerson?.displayName ?? translations.common.unknown,
+                )}
+              </li>
+              <li>{translations.landing.peopleCount(currentTree.people.length)}</li>
+              <li>
+                {translations.landing.familyGroupsCount(
+                  currentTree.families.length,
+                )}
+              </li>
             </ul>
           </div>
           <div className="visual-panel__actions">
             <a className="print-button" href={printLayoutUrl.toString()}>
-              Open PDF Export
+              {translations.landing.openPdfExport}
             </a>
           </div>
         </div>
@@ -659,9 +679,9 @@ export default function App() {
                   ? 'flow-frame__tool-button flow-frame__tool-button--active'
                   : 'flow-frame__tool-button'
               }
-              aria-label="Toggle search"
+              aria-label={translations.search.toggleSearch}
               aria-pressed={isSearchOpen}
-              title="Toggle search"
+              title={translations.search.toggleSearch}
               onClick={handleSearchToggle}
             >
               <svg
@@ -706,18 +726,20 @@ export default function App() {
                 onPointerDown={handleSearchDragStart}
               >
                 <div>
-                  <p className="graph-search__label">Search People</p>
-                  <p className="graph-search__hint">Drag to move</p>
+                  <p className="graph-search__label">{translations.search.title}</p>
+                  <p className="graph-search__hint">
+                    {translations.search.dragToMove}
+                  </p>
                 </div>
                 {isSearchPanelPositionChanged() ? (
                   <button
                     type="button"
                     className="graph-search__reset-button"
-                    title="Reset search panel position"
+                    title={translations.search.resetPosition}
                     onPointerDown={(event) => event.stopPropagation()}
                     onClick={handleSearchPositionReset}
                   >
-                    Reset
+                    {translations.search.reset}
                   </button>
                 ) : null}
               </div>
@@ -727,7 +749,7 @@ export default function App() {
                   id="graph-search-input"
                   className="graph-search__input"
                   type="search"
-                  placeholder="At least 3 letters"
+                  placeholder={translations.search.placeholder}
                   value={searchTerm}
                   onChange={handleSearchChange}
                   onKeyDown={handleSearchKeyDown}
@@ -738,7 +760,7 @@ export default function App() {
                   onClick={() => cycleSearchMatch(-1)}
                   disabled={searchMatches.length < 2}
                 >
-                  Prev
+                  {translations.search.previous}
                 </button>
                 <button
                   type="button"
@@ -746,7 +768,7 @@ export default function App() {
                   onClick={() => cycleSearchMatch(1)}
                   disabled={searchMatches.length < 2}
                 >
-                  Next
+                  {translations.search.next}
                 </button>
               </div>
               <p className="graph-search__meta">{searchStatus}</p>

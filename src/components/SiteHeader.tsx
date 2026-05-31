@@ -1,7 +1,11 @@
 import { useState } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { en } from '../i18n/translations/en';
 
 export function SiteHeader() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { language, setLanguage, translations } = useLanguage();
+  const { header } = translations;
   const buyMeACoffeeUrl =
     import.meta.env.VITE_BUY_ME_A_COFFEE_URL || 'https://www.buymeacoffee.com/your-page';
 
@@ -14,7 +18,7 @@ export function SiteHeader() {
           alt=""
           aria-hidden="true"
         />
-        <p className="hero__kicker">Family Tree Visualiser</p>
+        <p className="hero__kicker">{en.header.brandName}</p>
       </div>
 
       <div className="site-header__actions">
@@ -30,7 +34,7 @@ export function SiteHeader() {
             alt=""
             aria-hidden="true"
           />
-          <span>Coffee Time</span>
+          <span>{header.coffeeTime}</span>
         </a>
         <button
           type="button"
@@ -45,7 +49,7 @@ export function SiteHeader() {
             alt=""
             aria-hidden="true"
           />
-          <span>Settings</span>
+          <span>{header.settings}</span>
         </button>
       </div>
 
@@ -53,25 +57,41 @@ export function SiteHeader() {
         <section
           id="site-settings-menu"
           className="site-header__settings-menu"
-          aria-label="Language settings"
+          aria-label={header.languageSettings}
         >
-          <button type="button" className="site-header__language-option">
+          <button
+            type="button"
+            className="site-header__language-option"
+            aria-pressed={language === 'et'}
+            onClick={() => {
+              setLanguage('et');
+              setIsSettingsOpen(false);
+            }}
+          >
             <img
               className="site-header__language-icon"
               src={`${import.meta.env.BASE_URL}flag-ee.png`}
               alt=""
               aria-hidden="true"
             />
-            <span>eesti keeles</span>
+            <span>{header.estonian}</span>
           </button>
-          <button type="button" className="site-header__language-option">
+          <button
+            type="button"
+            className="site-header__language-option"
+            aria-pressed={language === 'en'}
+            onClick={() => {
+              setLanguage('en');
+              setIsSettingsOpen(false);
+            }}
+          >
             <img
               className="site-header__language-icon"
               src={`${import.meta.env.BASE_URL}flag-gb.png`}
               alt=""
               aria-hidden="true"
             />
-            <span>in english</span>
+            <span>{header.english}</span>
           </button>
         </section>
       ) : null}
