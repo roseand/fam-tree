@@ -456,9 +456,7 @@ export function PrintTreeView({
           </div>
           <h1 className="print-toolbar__title">PDF Export</h1>
           <p className="print-toolbar__meta">
-            Preview your family tree exactly as it will appear on printable A4
-            sheets. Each sheet uses the full page area, so you can download the
-            PDF, print the pages, and align them edge to edge on your wall.
+            Preview your family tree as printable A4 sheets. Download the PDF, print the pages, and align them edge to edge to create a wall-sized family tree.
           </p>
         </div>
       </header>

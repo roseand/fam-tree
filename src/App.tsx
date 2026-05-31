@@ -496,9 +496,7 @@ export default function App() {
           </div>
           <h1>Family Tree Visualiser</h1>
           <p className="hero__text">
-            Turn your family history into a clear, interactive family tree.
-            Explore the example, upload your own data, and create a printable
-            PDF that brings generations together in one beautiful view.
+            Explore your family history in a clear, interactive tree. Upload your own data and create a printable PDF that brings generations together in one view.
           </p>
         </div>
       </section>
