@@ -314,20 +314,6 @@ export const exampleFamilyTreeData = parseFamilyTreeInput(
   'Family Tree Example',
 );
 
-export const uploadFormatPreview = JSON.stringify(
-  {
-    version: '1.0',
-    tree: {
-      title: 'My Family Tree',
-      rootPersonId: exampleFamilyTreeData.tree.rootPersonId,
-    },
-    people: exampleFamilyTreeData.people.slice(0, 2),
-    families: exampleFamilyTreeData.families.slice(0, 1),
-  },
-  null,
-  2,
-);
-
 export const exampleFamilyTreePreview = JSON.stringify(
   {
     version: exampleFamilyTreeData.version,

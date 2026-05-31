@@ -6,7 +6,6 @@ export {
   parseUploadedFamilyTreeJson,
   persistUploadedFamilyTree,
   uploadFormatDocumentation,
-  uploadFormatPreview,
 } from './data';
 export type {
   UploadFormatDocumentationItem,

@@ -24,7 +24,6 @@ import {
   parseUploadedFamilyTreeJson,
   persistUploadedFamilyTree,
   uploadFormatDocumentation,
-  uploadFormatPreview,
 } from './lib/familyTree';
 import { JsonCodeBlock } from './components/JsonCodeBlock';
 import { buildFamilyTreeGraph } from './lib/familyTreeGraph';
@@ -42,7 +41,7 @@ export default function App() {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadFileName, setUploadFileName] = useState<string | null>(null);
   const [copiedPreviewKey, setCopiedPreviewKey] = useState<
-    'upload-format' | 'example-file' | null
+    'example-file' | null
   >(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDraggingSearch, setIsDraggingSearch] = useState(false);
@@ -358,7 +357,7 @@ export default function App() {
 
   async function handleCopyPreview(
     previewText: string,
-    previewKey: 'upload-format' | 'example-file',
+    previewKey: 'example-file',
   ) {
     try {
       await navigator.clipboard.writeText(previewText);
@@ -479,7 +478,7 @@ export default function App() {
           <div className="format-preview">
             <details className="format-preview__section">
               <summary>
-                <span>Expected Upload Format</span>
+                <span>Bundled Example File Preview</span>
                 <span className="format-preview__summary-actions">
                   <button
                     type="button"
@@ -487,17 +486,23 @@ export default function App() {
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();
-                      void handleCopyPreview(uploadFormatPreview, 'upload-format');
+                      void handleCopyPreview(
+                        exampleFamilyTreePreview,
+                        'example-file',
+                      );
                     }}
                   >
-                    {copiedPreviewKey === 'upload-format' ? 'Copied' : 'Copy'}
+                    {copiedPreviewKey === 'example-file' ? 'Copied' : 'Copy'}
                   </button>
                   <span className="format-preview__chevron" aria-hidden="true">
                     ▸
                   </span>
                 </span>
               </summary>
-              <JsonCodeBlock jsonText={uploadFormatPreview} />
+              <section className="format-preview__card">
+                <h3>family-tree.json</h3>
+                <JsonCodeBlock jsonText={exampleFamilyTreePreview} />
+              </section>
             </details>
 
             <details className="format-preview__section">
@@ -552,34 +557,6 @@ export default function App() {
               </div>
             </details>
 
-            <details className="format-preview__section">
-              <summary>
-                <span>Bundled Example File Preview</span>
-                <span className="format-preview__summary-actions">
-                  <button
-                    type="button"
-                    className="format-preview__copy-button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      void handleCopyPreview(
-                        exampleFamilyTreePreview,
-                        'example-file',
-                      );
-                    }}
-                  >
-                    {copiedPreviewKey === 'example-file' ? 'Copied' : 'Copy'}
-                  </button>
-                  <span className="format-preview__chevron" aria-hidden="true">
-                    ▸
-                  </span>
-                </span>
-              </summary>
-              <section className="format-preview__card">
-                <h3>family-tree.json</h3>
-                <JsonCodeBlock jsonText={exampleFamilyTreePreview} />
-              </section>
-            </details>
           </div>
         </div>
       </section>
