@@ -36,7 +36,9 @@ jobs:
       - name: Build site
         run: npm run build
         env:
+          VITE_SHOW_COFFEE_TIME: ${{ vars.VITE_SHOW_COFFEE_TIME }}
           VITE_BUY_ME_A_COFFEE_URL: ${{ vars.VITE_BUY_ME_A_COFFEE_URL }}
+          VITE_GITHUB_REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
 
       - name: Set up Pages
         uses: actions/configure-pages@v5

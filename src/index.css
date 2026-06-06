@@ -89,6 +89,11 @@ body {
   z-index: 10;
 }
 
+.site-strip--footer {
+  position: relative;
+  min-height: 24px;
+}
+
 .site-strip .hero__mark {
   width: 24px;
   height: 24px;
@@ -108,7 +113,53 @@ body {
   transform: translateY(-50%);
 }
 
-.site-header__action {
+.site-footer__actions {
+  position: absolute;
+  top: 50%;
+  right: max(12px, var(--screen-shell-padding));
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.site-footer__github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(219, 234, 254, 0.88);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.site-footer__github-link:hover {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.site-footer__github-icon {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+.site-strip--footer .site-strip__action {
+  gap: 5px;
+  min-height: 18px;
+  padding: 0 8px;
+  font-size: 0.64rem;
+}
+
+.site-strip--footer .site-strip__action-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.site-strip__action {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -129,14 +180,14 @@ body {
     box-shadow 140ms ease;
 }
 
-.site-header__action:hover,
+.site-strip__action:hover,
 .site-header__settings-button:hover,
 .site-header__settings-button[aria-expanded="true"] {
   background: rgba(219, 234, 254, 0.98);
   box-shadow: 0 7px 16px rgba(15, 23, 42, 0.3);
 }
 
-.site-header__action-icon {
+.site-strip__action-icon {
   width: 17px;
   height: 17px;
   object-fit: contain;
@@ -192,16 +243,45 @@ body {
 .hero {
   margin: 0 auto 20px;
   width: min(100%, var(--screen-surface-width));
-  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(34px, 5vw, 56px) 24px;
+  border-color: rgba(148, 163, 184, 0.22);
   border-radius: 24px;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(96, 165, 250, 0.24), transparent 34%),
+    radial-gradient(circle at 82% 12%, rgba(168, 85, 247, 0.18), transparent 30%),
+    linear-gradient(135deg, #14213a 0%, #1e293b 48%, #22344f 100%);
+  box-shadow: 0 24px 58px rgba(15, 23, 42, 0.18);
   text-align: center;
 }
 
+.hero::before,
+.print-toolbar::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%),
+    radial-gradient(circle at 50% 100%, rgba(219, 234, 254, 0.1), transparent 48%);
+  pointer-events: none;
+}
+
+.hero > div {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
 .hero h1 {
-  margin: 10px 0 12px;
+  margin: 0 0 14px;
+  color: #f8fafc;
   font-size: clamp(2.1rem, 3vw, 3.75rem);
   line-height: 0.98;
   letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .hero__eyebrow {
@@ -242,10 +322,11 @@ body {
 
 .hero__text {
   margin: 0 auto;
-  max-width: 860px;
+  max-width: 680px;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--ui-text);
+  color: rgba(226, 232, 240, 0.88);
+  text-wrap: balance;
 }
 
 .canvas-panel {
@@ -1024,26 +1105,44 @@ body {
 }
 
 .print-toolbar {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 18px;
   flex-wrap: wrap;
+  border-color: rgba(148, 163, 184, 0.22);
+  background:
+    radial-gradient(circle at 20% 12%, rgba(96, 165, 250, 0.22), transparent 34%),
+    radial-gradient(circle at 80% 16%, rgba(168, 85, 247, 0.16), transparent 30%),
+    linear-gradient(135deg, #14213a 0%, #1e293b 50%, #243853 100%);
+  box-shadow: 0 24px 58px rgba(15, 23, 42, 0.18);
   text-align: center;
 }
 
+.print-toolbar > div {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
 .print-toolbar__title {
-  margin: 10px 0 8px;
+  margin: 0 0 12px;
+  color: #f8fafc;
   font-size: clamp(1.8rem, 2.5vw, 2.8rem);
   line-height: 1;
   letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .print-toolbar__meta {
   margin: 0 auto;
-  max-width: 860px;
-  color: var(--ui-text);
+  max-width: 700px;
+  color: rgba(226, 232, 240, 0.88);
   line-height: 1.6;
+  text-wrap: balance;
 }
 
 .print-preview-panel__error {

@@ -6,8 +6,6 @@ export function SiteHeader() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { language, setLanguage, translations } = useLanguage();
   const { header } = translations;
-  const buyMeACoffeeUrl =
-    import.meta.env.VITE_BUY_ME_A_COFFEE_URL || 'https://www.buymeacoffee.com/your-page';
 
   return (
     <header className="site-strip site-strip--header">
@@ -22,29 +20,15 @@ export function SiteHeader() {
       </div>
 
       <div className="site-header__actions">
-        <a
-          className="site-header__action site-header__coffee-link"
-          href={buyMeACoffeeUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            className="site-header__action-icon"
-            src={`${import.meta.env.BASE_URL}coffee.png`}
-            alt=""
-            aria-hidden="true"
-          />
-          <span>{header.coffeeTime}</span>
-        </a>
         <button
           type="button"
-          className="site-header__action site-header__settings-button"
+          className="site-strip__action site-header__settings-button"
           aria-expanded={isSettingsOpen}
           aria-controls="site-settings-menu"
           onClick={() => setIsSettingsOpen((currentValue) => !currentValue)}
         >
           <img
-            className="site-header__action-icon"
+            className="site-strip__action-icon"
             src={`${import.meta.env.BASE_URL}settings.png`}
             alt=""
             aria-hidden="true"
