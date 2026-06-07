@@ -8,7 +8,7 @@ This project started from a request by a relative: the family data existed, but 
 
 - Loads family-tree data from a JSON file.
 - Shows the family tree as an interactive graph.
-- Includes bundled example data so the format is easier to understand.
+- Includes selectable example family trees so the format is easier to understand.
 - Keeps uploaded data in the browser session only. The file is not sent to a server.
 - Exports the graph layout as A4 landscape PDF pages for printing.
 - Supports Estonian and English UI text.
@@ -29,7 +29,7 @@ This project was developed with help from AI coding tools, including Codex, for 
 
 ## Data
 
-The app accepts a structured JSON file describing people, families, relationships, dates, and notes. The bundled example file is available in the UI and can be used as a starting point for creating a custom family tree.
+The app accepts a structured JSON file describing people, families, relationships, dates, and notes. The example files in the UI can be used as references for creating a custom family tree in one JSON file.
 
 ## Asset Credits
 
