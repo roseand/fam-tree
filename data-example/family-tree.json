@@ -2,7 +2,7 @@
   "version": "1.0",
   "tree": {
     "id": "family-tree-example",
-    "title": "Family Tree Example",
+    "title": "Estonian Family Tree Example",
     "rootPersonId": "p_anna"
   },
   "people": [

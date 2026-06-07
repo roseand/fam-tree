@@ -80,12 +80,13 @@ export type Translations = {
     uploadIntro: string;
     chooseJsonFile: string;
     useExampleData: string;
-    currentTree: (title: string, fileName: string | null) => string;
+    exampleTreesLabel: string;
+    exampleTreeOption: (title: string) => string;
     privacyNotice: string;
     exampleFilePreview: string;
     uploadFormatDocumentation: string;
     interactiveGraph: string;
-    showingSource: (sourceLabel: string) => string;
+    showingSource: (sourceLabel: string, title: string) => string;
     rootPerson: (name: string) => string;
     peopleCount: (count: number) => string;
     familyGroupsCount: (count: number) => string;

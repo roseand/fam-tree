@@ -20,8 +20,8 @@ export const et: Translations = {
     accepted: 'Lubatud',
     notes: 'Märkused',
     dataSources: {
-      example: 'näidisandmed',
-      uploaded: 'üles laaditud JSON',
+      example: 'näidis',
+      uploaded: 'üles laaditud',
     },
   },
   landing: {
@@ -33,14 +33,14 @@ export const et: Translations = {
       'Kasuta näidisfaili juhisena, et koostada oma sugupuu JSON-fail. Kui fail on valmis, vali see altpoolt, et uurida oma perekonda interaktiivsel graafikul ja luua prinditav PDF.',
     chooseJsonFile: 'Vali JSON-fail',
     useExampleData: 'Kasuta näidisandmeid',
-    currentTree: (title, fileName) =>
-      `Praegune sugupuu: ${title}${fileName ? ` (${fileName})` : ''}`,
+    exampleTreesLabel: 'Näidispuud',
+    exampleTreeOption: (title) => title,
     privacyNotice:
-      'Sinu fail jääb privaatseks: seda loetakse kohapeal ja säilitatakse ainult selle brauseriseansi jooksul. Faili ei laadita serverisse.',
+      'Sinu fail jääb privaatseks: seda loetakse lokaalselt ja säilitatakse ainult selle brauseriseansi jooksul. Faili ei laadita serverisse.',
     exampleFilePreview: 'Näidisfaili eelvaade',
     uploadFormatDocumentation: 'Üleslaadimisvormingu dokumentatsioon',
     interactiveGraph: 'Interaktiivne graafik',
-    showingSource: (sourceLabel) => `Kuvatakse: ${sourceLabel}`,
+    showingSource: (sourceLabel, title) => `Kuvatakse ${sourceLabel}: ${title}`,
     rootPerson: (name) => `Juurisik: ${name}`,
     peopleCount: (count) => `${count} ${count === 1 ? 'isik' : 'isikut'}`,
     familyGroupsCount: (count) =>

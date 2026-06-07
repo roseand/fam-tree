@@ -1,5 +1,6 @@
 export {
   clearPersistedUploadedFamilyTree,
+  exampleFamilyTreeData,
   exampleFamilyTreePreview,
   getExampleFamilyTreeState,
   loadInitialFamilyTreeState,

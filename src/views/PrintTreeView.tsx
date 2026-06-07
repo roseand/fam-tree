@@ -213,6 +213,7 @@ export function PrintTreeView({
     layout.pages,
     nodesById,
   ]);
+  const hasEmptyPages = pageRenderData.some((pageData) => pageData.isEmpty);
   const exportPageRenderData = useMemo(
     () =>
       skipEmptyPages
@@ -472,6 +473,7 @@ export function PrintTreeView({
               <p className="hero__tag">
                 {translations.landing.showingSource(
                   translations.common.dataSources[dataSource],
+                  treeData.tree.title,
                 )}
               </p>
             </div>
@@ -482,10 +484,17 @@ export function PrintTreeView({
             </ul>
           </div>
           <div className="visual-panel__actions">
-            <label className="print-option">
+            <label
+              className={
+                hasEmptyPages
+                  ? 'print-option'
+                  : 'print-option print-option--disabled'
+              }
+            >
               <input
                 type="checkbox"
                 checked={skipEmptyPages}
+                disabled={!hasEmptyPages}
                 onChange={(event) => setSkipEmptyPages(event.target.checked)}
               />
               <span>{translations.pdf.skipEmptyPages}</span>

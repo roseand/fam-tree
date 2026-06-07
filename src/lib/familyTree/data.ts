@@ -328,7 +328,7 @@ function writeStoredUploadedTree(value: string | null) {
 
 export const exampleFamilyTreeData = parseFamilyTreeInput(
   exampleFamilyTreeJson as FamilyTreeInput,
-  'Family Tree Example',
+  'Estonian Family Tree Example',
   DEFAULT_VALIDATION_MESSAGES,
 );
 

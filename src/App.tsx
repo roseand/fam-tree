@@ -18,6 +18,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import {
   clearPersistedUploadedFamilyTree,
+  exampleFamilyTreeData,
   exampleFamilyTreePreview,
   getExampleFamilyTreeState,
   loadInitialFamilyTreeState,
@@ -47,7 +48,6 @@ export default function App() {
   const { translations } = useLanguage();
   const [treeState, setTreeState] = useState(() => loadInitialFamilyTreeState());
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [uploadFileName, setUploadFileName] = useState<string | null>(null);
   const [copiedPreviewKey, setCopiedPreviewKey] = useState<
     'example-file' | null
   >(null);
@@ -333,7 +333,6 @@ export default function App() {
         data: uploadedTree,
         source: 'uploaded',
       });
-      setUploadFileName(file.name);
       setUploadError(null);
     } catch (error) {
       setUploadError(
@@ -345,7 +344,6 @@ export default function App() {
   function handleUseExampleData() {
     clearPersistedUploadedFamilyTree();
     setTreeState(getExampleFamilyTreeState());
-    setUploadFileName(null);
     setUploadError(null);
   }
 
@@ -510,16 +508,53 @@ export default function App() {
             <h2>{translations.landing.uploadTitle}</h2>
             <p>{translations.landing.uploadIntro}</p>
             <div className="data-panel__actions">
-              <label className="print-button" htmlFor="family-tree-upload">
-                {translations.landing.chooseJsonFile}
+              <div className="data-panel__upload-control">
+                <div className="data-panel__upload-row">
+                  <label className="print-button" htmlFor="family-tree-upload">
+                    {translations.landing.chooseJsonFile}
+                  </label>
+                  <span
+                    className="data-panel__privacy-tooltip"
+                    tabIndex={0}
+                    aria-label={translations.landing.privacyNotice}
+                  >
+                    <img
+                      className="data-panel__notice-icon"
+                      src={`${import.meta.env.BASE_URL}info.png`}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                    <span
+                      className="data-panel__privacy-tooltip-text"
+                      role="tooltip"
+                    >
+                      {translations.landing.privacyNotice}
+                    </span>
+                  </span>
+                </div>
+                <input
+                  id="family-tree-upload"
+                  className="upload-input"
+                  type="file"
+                  accept=".json,application/json,text/json"
+                  onChange={handleFileChange}
+                />
+              </div>
+            </div>
+            <div className="data-panel__example-picker">
+              <label className="data-panel__tree-select">
+                <span>{translations.landing.exampleTreesLabel}</span>
+                <select
+                  defaultValue="example-tree"
+                  disabled={treeState.source === 'uploaded'}
+                >
+                  <option value="example-tree">
+                    {translations.landing.exampleTreeOption(
+                      exampleFamilyTreeData.tree.title,
+                    )}
+                  </option>
+                </select>
               </label>
-              <input
-                id="family-tree-upload"
-                className="upload-input"
-                type="file"
-                accept=".json,application/json,text/json"
-                onChange={handleFileChange}
-              />
               {treeState.source === 'uploaded' ? (
                 <button
                   type="button"
@@ -530,15 +565,6 @@ export default function App() {
                 </button>
               ) : null}
             </div>
-            <p className="data-panel__status">
-              {translations.landing.currentTree(
-                currentTree.tree.title,
-                uploadFileName,
-              )}
-            </p>
-            <p className="data-panel__notice">
-              {translations.landing.privacyNotice}
-            </p>
             {uploadError ? (
               <p className="data-panel__error" role="alert">
                 {uploadError}
@@ -646,6 +672,7 @@ export default function App() {
               <p className="hero__tag">
                 {translations.landing.showingSource(
                   translations.common.dataSources[treeState.source],
+                  currentTree.tree.title,
                 )}
               </p>
             </div>

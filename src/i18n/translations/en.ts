@@ -20,8 +20,8 @@ export const en: Translations = {
     accepted: 'Accepted',
     notes: 'Notes',
     dataSources: {
-      example: 'example data',
-      uploaded: 'uploaded JSON',
+      example: 'example',
+      uploaded: 'uploaded',
     },
   },
   landing: {
@@ -33,14 +33,14 @@ export const en: Translations = {
       'Use the example as a guide to build your own family-tree JSON file. When it is ready, choose the file below to explore your family in the interactive graph and create a printable PDF.',
     chooseJsonFile: 'Choose JSON File',
     useExampleData: 'Use Example Data',
-    currentTree: (title, fileName) =>
-      `Current tree: ${title}${fileName ? ` (${fileName})` : ''}`,
+    exampleTreesLabel: 'Example Trees',
+    exampleTreeOption: (title) => title,
     privacyNotice:
       'Your file stays private: it is read locally and kept only in this browser session. It is not uploaded to a server.',
     exampleFilePreview: 'Example File Preview',
     uploadFormatDocumentation: 'Upload Format Documentation',
     interactiveGraph: 'Interactive Graph',
-    showingSource: (sourceLabel) => `Showing ${sourceLabel}`,
+    showingSource: (sourceLabel, title) => `Showing ${sourceLabel}: ${title}`,
     rootPerson: (name) => `Root person: ${name}`,
     peopleCount: (count) => `${count} ${count === 1 ? 'person' : 'people'}`,
     familyGroupsCount: (count) =>
