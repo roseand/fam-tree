@@ -7,7 +7,9 @@ export {
   getExampleFamilyTreeState,
   loadInitialFamilyTreeState,
   parseUploadedFamilyTreeJson,
+  persistSelectedExampleFamilyTreeId,
   persistUploadedFamilyTree,
+  readSelectedExampleFamilyTreeId,
 } from './data';
 export type {
   FamilyTreeData,

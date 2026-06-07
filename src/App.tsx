@@ -24,7 +24,9 @@ import {
   getExampleFamilyTreeState,
   loadInitialFamilyTreeState,
   parseUploadedFamilyTreeJson,
+  persistSelectedExampleFamilyTreeId,
   persistUploadedFamilyTree,
+  readSelectedExampleFamilyTreeId,
   type ExampleFamilyTreeId,
 } from './lib/familyTree';
 import { JsonCodeBlock } from './components/JsonCodeBlock';
@@ -46,24 +48,10 @@ const INITIAL_SEARCH_PANEL_POSITION = {
   y: 14,
 };
 
-const EXAMPLE_TREE_QUERY_PARAM = 'example';
-
-function getExampleTreeIdFromUrl(): ExampleFamilyTreeId {
-  const exampleTreeId = new URLSearchParams(window.location.search).get(
-    EXAMPLE_TREE_QUERY_PARAM,
-  );
-
-  return exampleFamilyTrees.some((exampleTree) => exampleTree.id === exampleTreeId)
-    ? (exampleTreeId as ExampleFamilyTreeId)
-    : defaultExampleFamilyTreeId;
-}
-
 export default function App() {
   const { translations } = useLanguage();
-  const initialExampleTreeId = getExampleTreeIdFromUrl();
-  const [treeState, setTreeState] = useState(() =>
-    loadInitialFamilyTreeState(initialExampleTreeId),
-  );
+  const initialExampleTreeId = readSelectedExampleFamilyTreeId();
+  const [treeState, setTreeState] = useState(() => loadInitialFamilyTreeState());
   const [selectedExampleTreeId, setSelectedExampleTreeId] =
     useState<ExampleFamilyTreeId>(initialExampleTreeId);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -375,6 +363,7 @@ export default function App() {
     const exampleTreeId = event.target.value as ExampleFamilyTreeId;
 
     setSelectedExampleTreeId(exampleTreeId);
+    persistSelectedExampleFamilyTreeId(exampleTreeId);
     clearPersistedUploadedFamilyTree();
     setTreeState(getExampleFamilyTreeState(exampleTreeId));
     setCopiedPreviewKey(null);
@@ -383,6 +372,7 @@ export default function App() {
 
   function handleUseExampleData() {
     clearPersistedUploadedFamilyTree();
+    persistSelectedExampleFamilyTreeId(selectedExampleTreeId);
     setTreeState(getExampleFamilyTreeState(selectedExampleTreeId));
     setUploadError(null);
   }
@@ -514,14 +504,6 @@ export default function App() {
 
   const printLayoutUrl = new URL(window.location.href);
   printLayoutUrl.searchParams.set('view', 'print');
-  if (treeState.source === 'example') {
-    printLayoutUrl.searchParams.set(
-      EXAMPLE_TREE_QUERY_PARAM,
-      selectedExampleTreeId,
-    );
-  } else {
-    printLayoutUrl.searchParams.delete(EXAMPLE_TREE_QUERY_PARAM);
-  }
   const searchStatus =
     normalizedSearchTerm.length === 0
       ? translations.search.typeAtLeastThreeLetters

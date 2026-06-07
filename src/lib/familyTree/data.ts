@@ -11,6 +11,7 @@ import type {
 } from './types';
 
 const UPLOADED_TREE_STORAGE_KEY = 'family-tree-uploaded-json-v1';
+const SELECTED_EXAMPLE_TREE_STORAGE_KEY = 'family-tree-selected-example-v1';
 const DEFAULT_VALIDATION_MESSAGES = en.upload.validation;
 
 export type ExampleFamilyTreeId = 'estonian' | 'british-royal';
@@ -312,6 +313,38 @@ function readStoredUploadedTree() {
   }
 }
 
+export function readSelectedExampleFamilyTreeId(): ExampleFamilyTreeId {
+  if (typeof window === 'undefined') {
+    return defaultExampleFamilyTreeId;
+  }
+
+  try {
+    const storedValue = window.sessionStorage.getItem(
+      SELECTED_EXAMPLE_TREE_STORAGE_KEY,
+    );
+
+    return exampleFamilyTrees.some((exampleTree) => exampleTree.id === storedValue)
+      ? (storedValue as ExampleFamilyTreeId)
+      : defaultExampleFamilyTreeId;
+  } catch {
+    return defaultExampleFamilyTreeId;
+  }
+}
+
+export function persistSelectedExampleFamilyTreeId(
+  exampleId: ExampleFamilyTreeId,
+) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.sessionStorage.setItem(SELECTED_EXAMPLE_TREE_STORAGE_KEY, exampleId);
+  } catch {
+    // Ignore storage failures and keep the current in-memory selection.
+  }
+}
+
 function writeStoredUploadedTree(value: string | null) {
   if (typeof window === 'undefined') {
     return;
@@ -425,9 +458,7 @@ export function clearPersistedUploadedFamilyTree() {
   writeStoredUploadedTree(null);
 }
 
-export function loadInitialFamilyTreeState(
-  exampleId = defaultExampleFamilyTreeId,
-): FamilyTreeState {
+export function loadInitialFamilyTreeState(): FamilyTreeState {
   const storedJson = readStoredUploadedTree();
 
   if (storedJson) {
@@ -444,7 +475,7 @@ export function loadInitialFamilyTreeState(
     }
   }
 
-  return getExampleFamilyTreeState(exampleId);
+  return getExampleFamilyTreeState(readSelectedExampleFamilyTreeId());
 }
 
 export type { FamilyTreeDataSource };

@@ -18,7 +18,7 @@ function parseExactDate(value: string) {
 }
 
 function parseApproximateYear(value: string) {
-  const match = /^ca\s+(\d{4})$/i.exec(value.trim());
+  const match = /^(?:ca\s+)?(\d{4})$/i.exec(value.trim());
 
   return match ? Number(match[1]) : null;
 }
