@@ -1,3 +1,4 @@
+import britishRoyalFamilyTreeJson from '../../../data-example/british-royal-family.json';
 import exampleFamilyTreeJson from '../../../data-example/family-tree.json';
 import { en } from '../../i18n/translations/en';
 import type { FamilyTreeValidationMessages } from '../../i18n/types';
@@ -11,6 +12,8 @@ import type {
 
 const UPLOADED_TREE_STORAGE_KEY = 'family-tree-uploaded-json-v1';
 const DEFAULT_VALIDATION_MESSAGES = en.upload.validation;
+
+export type ExampleFamilyTreeId = 'estonian' | 'british-royal';
 
 type FamilyTreeInput = {
   version?: unknown;
@@ -326,26 +329,66 @@ function writeStoredUploadedTree(value: string | null) {
   }
 }
 
-export const exampleFamilyTreeData = parseFamilyTreeInput(
-  exampleFamilyTreeJson as FamilyTreeInput,
-  'Estonian Family Tree Example',
-  DEFAULT_VALIDATION_MESSAGES,
-);
+function buildExamplePreview(data: FamilyTreeData) {
+  return JSON.stringify(
+    {
+      version: data.version,
+      tree: data.tree,
+      people: data.people.slice(0, 3),
+      families: data.families.slice(0, 2),
+    },
+    null,
+    2,
+  );
+}
 
-export const exampleFamilyTreePreview = JSON.stringify(
+export const exampleFamilyTrees = [
   {
-    version: exampleFamilyTreeData.version,
-    tree: exampleFamilyTreeData.tree,
-    people: exampleFamilyTreeData.people.slice(0, 3),
-    families: exampleFamilyTreeData.families.slice(0, 2),
+    id: 'estonian',
+    fileName: 'family-tree.json',
+    data: parseFamilyTreeInput(
+      exampleFamilyTreeJson as FamilyTreeInput,
+      'Estonian Family Tree Example',
+      DEFAULT_VALIDATION_MESSAGES,
+    ),
   },
-  null,
-  2,
-);
+  {
+    id: 'british-royal',
+    fileName: 'british-royal-family.json',
+    data: parseFamilyTreeInput(
+      britishRoyalFamilyTreeJson as FamilyTreeInput,
+      'British Royal Family Main Line Example',
+      DEFAULT_VALIDATION_MESSAGES,
+    ),
+  },
+] satisfies Array<{
+  id: ExampleFamilyTreeId;
+  fileName: string;
+  data: FamilyTreeData;
+}>;
 
-export function getExampleFamilyTreeState(): FamilyTreeState {
+export const defaultExampleFamilyTreeId = exampleFamilyTrees[0].id;
+
+export const exampleFamilyTreeData = exampleFamilyTrees[0].data;
+
+function getExampleFamilyTree(exampleId: ExampleFamilyTreeId) {
+  return (
+    exampleFamilyTrees.find((exampleTree) => exampleTree.id === exampleId) ??
+    exampleFamilyTrees[0]
+  );
+}
+
+export function getExampleFamilyTreePreview(
+  exampleId = defaultExampleFamilyTreeId,
+) {
+  return buildExamplePreview(getExampleFamilyTree(exampleId).data);
+}
+
+export function getExampleFamilyTreeState(
+  exampleId = defaultExampleFamilyTreeId,
+): FamilyTreeState {
   return {
-    data: exampleFamilyTreeData,
+    data: getExampleFamilyTree(exampleId).data,
     source: 'example',
   };
 }
@@ -382,7 +425,9 @@ export function clearPersistedUploadedFamilyTree() {
   writeStoredUploadedTree(null);
 }
 
-export function loadInitialFamilyTreeState(): FamilyTreeState {
+export function loadInitialFamilyTreeState(
+  exampleId = defaultExampleFamilyTreeId,
+): FamilyTreeState {
   const storedJson = readStoredUploadedTree();
 
   if (storedJson) {
@@ -399,7 +444,7 @@ export function loadInitialFamilyTreeState(): FamilyTreeState {
     }
   }
 
-  return getExampleFamilyTreeState();
+  return getExampleFamilyTreeState(exampleId);
 }
 
 export type { FamilyTreeDataSource };

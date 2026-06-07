@@ -1,7 +1,9 @@
 export {
   clearPersistedUploadedFamilyTree,
+  defaultExampleFamilyTreeId,
   exampleFamilyTreeData,
-  exampleFamilyTreePreview,
+  exampleFamilyTrees,
+  getExampleFamilyTreePreview,
   getExampleFamilyTreeState,
   loadInitialFamilyTreeState,
   parseUploadedFamilyTreeJson,
@@ -14,3 +16,4 @@ export type {
   FamilyTreePerson,
   FamilyTreeState,
 } from './types';
+export type { ExampleFamilyTreeId } from './data';

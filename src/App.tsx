@@ -18,12 +18,14 @@ import {
 import '@xyflow/react/dist/style.css';
 import {
   clearPersistedUploadedFamilyTree,
-  exampleFamilyTreeData,
-  exampleFamilyTreePreview,
+  defaultExampleFamilyTreeId,
+  exampleFamilyTrees,
+  getExampleFamilyTreePreview,
   getExampleFamilyTreeState,
   loadInitialFamilyTreeState,
   parseUploadedFamilyTreeJson,
   persistUploadedFamilyTree,
+  type ExampleFamilyTreeId,
 } from './lib/familyTree';
 import { JsonCodeBlock } from './components/JsonCodeBlock';
 import { SiteFooter } from './components/SiteFooter';
@@ -44,9 +46,26 @@ const INITIAL_SEARCH_PANEL_POSITION = {
   y: 14,
 };
 
+const EXAMPLE_TREE_QUERY_PARAM = 'example';
+
+function getExampleTreeIdFromUrl(): ExampleFamilyTreeId {
+  const exampleTreeId = new URLSearchParams(window.location.search).get(
+    EXAMPLE_TREE_QUERY_PARAM,
+  );
+
+  return exampleFamilyTrees.some((exampleTree) => exampleTree.id === exampleTreeId)
+    ? (exampleTreeId as ExampleFamilyTreeId)
+    : defaultExampleFamilyTreeId;
+}
+
 export default function App() {
   const { translations } = useLanguage();
-  const [treeState, setTreeState] = useState(() => loadInitialFamilyTreeState());
+  const initialExampleTreeId = getExampleTreeIdFromUrl();
+  const [treeState, setTreeState] = useState(() =>
+    loadInitialFamilyTreeState(initialExampleTreeId),
+  );
+  const [selectedExampleTreeId, setSelectedExampleTreeId] =
+    useState<ExampleFamilyTreeId>(initialExampleTreeId);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [copiedPreviewKey, setCopiedPreviewKey] = useState<
     'example-file' | null
@@ -78,6 +97,17 @@ export default function App() {
   const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const currentTree = treeState.data;
+  const selectedExampleTree = useMemo(
+    () =>
+      exampleFamilyTrees.find(
+        (exampleTree) => exampleTree.id === selectedExampleTreeId,
+      ) ?? exampleFamilyTrees[0],
+    [selectedExampleTreeId],
+  );
+  const selectedExampleFamilyTreePreview = useMemo(
+    () => getExampleFamilyTreePreview(selectedExampleTreeId),
+    [selectedExampleTreeId],
+  );
   const graph = useMemo(() => buildFamilyTreeGraph(currentTree), [currentTree]);
   const interactiveGraph = useMemo(() => {
     return {
@@ -341,9 +371,19 @@ export default function App() {
     }
   }
 
+  function handleExampleTreeChange(event: ChangeEvent<HTMLSelectElement>) {
+    const exampleTreeId = event.target.value as ExampleFamilyTreeId;
+
+    setSelectedExampleTreeId(exampleTreeId);
+    clearPersistedUploadedFamilyTree();
+    setTreeState(getExampleFamilyTreeState(exampleTreeId));
+    setCopiedPreviewKey(null);
+    setUploadError(null);
+  }
+
   function handleUseExampleData() {
     clearPersistedUploadedFamilyTree();
-    setTreeState(getExampleFamilyTreeState());
+    setTreeState(getExampleFamilyTreeState(selectedExampleTreeId));
     setUploadError(null);
   }
 
@@ -474,6 +514,14 @@ export default function App() {
 
   const printLayoutUrl = new URL(window.location.href);
   printLayoutUrl.searchParams.set('view', 'print');
+  if (treeState.source === 'example') {
+    printLayoutUrl.searchParams.set(
+      EXAMPLE_TREE_QUERY_PARAM,
+      selectedExampleTreeId,
+    );
+  } else {
+    printLayoutUrl.searchParams.delete(EXAMPLE_TREE_QUERY_PARAM);
+  }
   const searchStatus =
     normalizedSearchTerm.length === 0
       ? translations.search.typeAtLeastThreeLetters
@@ -545,14 +593,17 @@ export default function App() {
               <label className="data-panel__tree-select">
                 <span>{translations.landing.exampleTreesLabel}</span>
                 <select
-                  defaultValue="example-tree"
+                  value={selectedExampleTreeId}
                   disabled={treeState.source === 'uploaded'}
+                  onChange={handleExampleTreeChange}
                 >
-                  <option value="example-tree">
-                    {translations.landing.exampleTreeOption(
-                      exampleFamilyTreeData.tree.title,
-                    )}
-                  </option>
+                  {exampleFamilyTrees.map((exampleTree) => (
+                    <option key={exampleTree.id} value={exampleTree.id}>
+                      {translations.landing.exampleTreeOption(
+                        exampleTree.data.tree.title,
+                      )}
+                    </option>
+                  ))}
                 </select>
               </label>
               {treeState.source === 'uploaded' ? (
@@ -584,7 +635,7 @@ export default function App() {
                       event.preventDefault();
                       event.stopPropagation();
                       void handleCopyPreview(
-                        exampleFamilyTreePreview,
+                        selectedExampleFamilyTreePreview,
                         'example-file',
                       );
                     }}
@@ -599,8 +650,8 @@ export default function App() {
                 </span>
               </summary>
               <section className="format-preview__card">
-                <h3>family-tree.json</h3>
-                <JsonCodeBlock jsonText={exampleFamilyTreePreview} />
+                <h3>{selectedExampleTree.fileName}</h3>
+                <JsonCodeBlock jsonText={selectedExampleFamilyTreePreview} />
               </section>
             </details>
 

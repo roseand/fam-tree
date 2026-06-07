@@ -1,0 +1,2795 @@
+{
+  "version": "1.0",
+  "tree": {
+    "id": "british-royal-family-main-line",
+    "title": "British Royal Family Main Line Example",
+    "rootPersonId": "p_william_i"
+  },
+  "people": [
+    {
+      "id": "p_william_i",
+      "displayName": "William I",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1028",
+        "place": "Falaise, Normandy"
+      },
+      "death": {
+        "date": "09.09.1087",
+        "dateText": null,
+        "place": "Rouen, Normandy"
+      },
+      "notes": "William the Conqueror"
+    },
+    {
+      "id": "p_matilda_flanders",
+      "displayName": "Matilda of Flanders",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1031",
+        "place": "Flanders"
+      },
+      "death": {
+        "date": "02.11.1083",
+        "dateText": null,
+        "place": "Caen, Normandy"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_henry_i",
+      "displayName": "Henry I",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1068",
+        "place": "Selby, England"
+      },
+      "death": {
+        "date": "01.12.1135",
+        "dateText": null,
+        "place": "Lyons-la-Foret, Normandy"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_matilda_scotland",
+      "displayName": "Matilda of Scotland",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1080",
+        "place": "Scotland"
+      },
+      "death": {
+        "date": "01.05.1118",
+        "dateText": null,
+        "place": "Westminster, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_empress_matilda",
+      "displayName": "Empress Matilda",
+      "sex": "female",
+      "birth": {
+        "date": "07.02.1102",
+        "dateText": null,
+        "place": "England"
+      },
+      "death": {
+        "date": "10.09.1167",
+        "dateText": null,
+        "place": "Rouen, Normandy"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_geoffrey_plantagenet",
+      "displayName": "Geoffrey Plantagenet",
+      "sex": "male",
+      "birth": {
+        "date": "24.08.1113",
+        "dateText": null,
+        "place": "Anjou"
+      },
+      "death": {
+        "date": "07.09.1151",
+        "dateText": null,
+        "place": "Chateau-du-Loir, France"
+      },
+      "notes": "Count of Anjou."
+    },
+    {
+      "id": "p_henry_ii",
+      "displayName": "Henry II",
+      "sex": "male",
+      "birth": {
+        "date": "05.03.1133",
+        "dateText": null,
+        "place": "Le Mans, France"
+      },
+      "death": {
+        "date": "06.07.1189",
+        "dateText": null,
+        "place": "Chinon, France"
+      },
+      "notes": "First Plantagenet king of England."
+    },
+    {
+      "id": "p_eleanor_aquitaine",
+      "displayName": "Eleanor of Aquitaine",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1122",
+        "place": "Aquitaine"
+      },
+      "death": {
+        "date": "01.04.1204",
+        "dateText": null,
+        "place": "Fontevraud Abbey, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_john",
+      "displayName": "John",
+      "sex": "male",
+      "birth": {
+        "date": "24.12.1166",
+        "dateText": null,
+        "place": "Oxford, England"
+      },
+      "death": {
+        "date": "19.10.1216",
+        "dateText": null,
+        "place": "Newark, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_isabella_angouleme",
+      "displayName": "Isabella of Angouleme",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1188",
+        "place": "Angouleme, France"
+      },
+      "death": {
+        "date": "04.06.1246",
+        "dateText": null,
+        "place": "Fontevraud Abbey, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_henry_iii",
+      "displayName": "Henry III",
+      "sex": "male",
+      "birth": {
+        "date": "01.10.1207",
+        "dateText": null,
+        "place": "Winchester, England"
+      },
+      "death": {
+        "date": "16.11.1272",
+        "dateText": null,
+        "place": "Westminster, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_eleanor_provence",
+      "displayName": "Eleanor of Provence",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1223",
+        "place": "Provence"
+      },
+      "death": {
+        "date": "24.06.1291",
+        "dateText": null,
+        "place": "Amesbury, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edward_i",
+      "displayName": "Edward I",
+      "sex": "male",
+      "birth": {
+        "date": "17.06.1239",
+        "dateText": null,
+        "place": "Westminster, England"
+      },
+      "death": {
+        "date": "07.07.1307",
+        "dateText": null,
+        "place": "Burgh by Sands, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_eleanor_castile",
+      "displayName": "Eleanor of Castile",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1241",
+        "place": "Castile"
+      },
+      "death": {
+        "date": "28.11.1290",
+        "dateText": null,
+        "place": "Harby, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edward_ii",
+      "displayName": "Edward II",
+      "sex": "male",
+      "birth": {
+        "date": "25.04.1284",
+        "dateText": null,
+        "place": "Caernarfon, Wales"
+      },
+      "death": {
+        "date": "21.09.1327",
+        "dateText": null,
+        "place": "Berkeley Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_isabella_france",
+      "displayName": "Isabella of France",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1295",
+        "place": "France"
+      },
+      "death": {
+        "date": "22.08.1358",
+        "dateText": null,
+        "place": "Hertford Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edward_iii",
+      "displayName": "Edward III",
+      "sex": "male",
+      "birth": {
+        "date": "13.11.1312",
+        "dateText": null,
+        "place": "Windsor Castle, England"
+      },
+      "death": {
+        "date": "21.06.1377",
+        "dateText": null,
+        "place": "Sheen Palace, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_philippa_hainault",
+      "displayName": "Philippa of Hainault",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1314",
+        "place": "Hainault"
+      },
+      "death": {
+        "date": "15.08.1369",
+        "dateText": null,
+        "place": "Windsor Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_john_gaunt",
+      "displayName": "John of Gaunt",
+      "sex": "male",
+      "birth": {
+        "date": "06.03.1340",
+        "dateText": null,
+        "place": "Ghent"
+      },
+      "death": {
+        "date": "03.02.1399",
+        "dateText": null,
+        "place": "Leicester, England"
+      },
+      "notes": "Duke of Lancaster."
+    },
+    {
+      "id": "p_katherine_swynford",
+      "displayName": "Katherine Swynford",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1350",
+        "place": "Hainault"
+      },
+      "death": {
+        "date": "10.05.1403",
+        "dateText": null,
+        "place": "Lincoln, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_john_beaufort_earl",
+      "displayName": "John Beaufort",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1373",
+        "place": "England"
+      },
+      "death": {
+        "date": "16.03.1410",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": "1st Earl of Somerset."
+    },
+    {
+      "id": "p_margaret_holland",
+      "displayName": "Margaret Holland",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1385",
+        "place": "England"
+      },
+      "death": {
+        "date": "30.12.1439",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_john_beaufort_duke",
+      "displayName": "John Beaufort",
+      "sex": "male",
+      "birth": {
+        "date": "25.03.1404",
+        "dateText": null,
+        "place": "England"
+      },
+      "death": {
+        "date": "27.05.1444",
+        "dateText": null,
+        "place": "Wimborne Minster, England"
+      },
+      "notes": "1st Duke of Somerset."
+    },
+    {
+      "id": "p_margaret_beauchamp",
+      "displayName": "Margaret Beauchamp",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1410",
+        "place": "England"
+      },
+      "death": {
+        "date": "08.08.1482",
+        "dateText": null,
+        "place": "England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_margaret_beaufort",
+      "displayName": "Margaret Beaufort",
+      "sex": "female",
+      "birth": {
+        "date": "31.05.1443",
+        "dateText": null,
+        "place": "Bletsoe, England"
+      },
+      "death": {
+        "date": "29.06.1509",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edmund_tudor",
+      "displayName": "Edmund Tudor",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1430",
+        "place": "Much Hadham, England"
+      },
+      "death": {
+        "date": "03.11.1456",
+        "dateText": null,
+        "place": "Carmarthen, Wales"
+      },
+      "notes": "Earl of Richmond."
+    },
+    {
+      "id": "p_henry_vii",
+      "displayName": "Henry VII",
+      "sex": "male",
+      "birth": {
+        "date": "28.01.1457",
+        "dateText": null,
+        "place": "Pembroke Castle, Wales"
+      },
+      "death": {
+        "date": "21.04.1509",
+        "dateText": null,
+        "place": "Richmond Palace, England"
+      },
+      "notes": "First Tudor monarch."
+    },
+    {
+      "id": "p_elizabeth_york",
+      "displayName": "Elizabeth of York",
+      "sex": "female",
+      "birth": {
+        "date": "11.02.1466",
+        "dateText": null,
+        "place": "Westminster, England"
+      },
+      "death": {
+        "date": "11.02.1503",
+        "dateText": null,
+        "place": "Tower of London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_margaret_tudor",
+      "displayName": "Margaret Tudor",
+      "sex": "female",
+      "birth": {
+        "date": "28.11.1489",
+        "dateText": null,
+        "place": "Westminster, England"
+      },
+      "death": {
+        "date": "18.10.1541",
+        "dateText": null,
+        "place": "Methven Castle, Scotland"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_james_iv",
+      "displayName": "James IV of Scotland",
+      "sex": "male",
+      "birth": {
+        "date": "17.03.1473",
+        "dateText": null,
+        "place": "Stirling Castle, Scotland"
+      },
+      "death": {
+        "date": "09.09.1513",
+        "dateText": null,
+        "place": "Flodden, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_james_v",
+      "displayName": "James V of Scotland",
+      "sex": "male",
+      "birth": {
+        "date": "10.04.1512",
+        "dateText": null,
+        "place": "Linlithgow Palace, Scotland"
+      },
+      "death": {
+        "date": "14.12.1542",
+        "dateText": null,
+        "place": "Falkland Palace, Scotland"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_mary_guise",
+      "displayName": "Mary of Guise",
+      "sex": "female",
+      "birth": {
+        "date": "22.11.1515",
+        "dateText": null,
+        "place": "Bar-le-Duc, France"
+      },
+      "death": {
+        "date": "11.06.1560",
+        "dateText": null,
+        "place": "Edinburgh, Scotland"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_mary_scots",
+      "displayName": "Mary, Queen of Scots",
+      "sex": "female",
+      "birth": {
+        "date": "08.12.1542",
+        "dateText": null,
+        "place": "Linlithgow Palace, Scotland"
+      },
+      "death": {
+        "date": "08.02.1587",
+        "dateText": null,
+        "place": "Fotheringhay Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_lord_darnley",
+      "displayName": "Henry Stuart, Lord Darnley",
+      "sex": "male",
+      "birth": {
+        "date": "07.12.1545",
+        "dateText": null,
+        "place": "Temple Newsam, England"
+      },
+      "death": {
+        "date": "10.02.1567",
+        "dateText": null,
+        "place": "Edinburgh, Scotland"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_james_vi_i",
+      "displayName": "James VI and I",
+      "sex": "male",
+      "birth": {
+        "date": "19.06.1566",
+        "dateText": null,
+        "place": "Edinburgh Castle, Scotland"
+      },
+      "death": {
+        "date": "27.03.1625",
+        "dateText": null,
+        "place": "Theobalds House, England"
+      },
+      "notes": "James VI of Scotland and James I of England."
+    },
+    {
+      "id": "p_anne_denmark",
+      "displayName": "Anne of Denmark",
+      "sex": "female",
+      "birth": {
+        "date": "12.12.1574",
+        "dateText": null,
+        "place": "Skanderborg, Denmark"
+      },
+      "death": {
+        "date": "02.03.1619",
+        "dateText": null,
+        "place": "Hampton Court Palace, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_elizabeth_stuart",
+      "displayName": "Elizabeth Stuart",
+      "sex": "female",
+      "birth": {
+        "date": "19.08.1596",
+        "dateText": null,
+        "place": "Falkland Palace, Scotland"
+      },
+      "death": {
+        "date": "13.02.1662",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_frederick_v",
+      "displayName": "Frederick V",
+      "sex": "male",
+      "birth": {
+        "date": "26.08.1596",
+        "dateText": null,
+        "place": "Deinschwang"
+      },
+      "death": {
+        "date": "29.11.1632",
+        "dateText": null,
+        "place": "Mainz"
+      },
+      "notes": "Elector Palatine."
+    },
+    {
+      "id": "p_sophia_hanover",
+      "displayName": "Sophia of Hanover",
+      "sex": "female",
+      "birth": {
+        "date": "14.10.1630",
+        "dateText": null,
+        "place": "The Hague"
+      },
+      "death": {
+        "date": "08.06.1714",
+        "dateText": null,
+        "place": "Herrenhausen, Hanover"
+      },
+      "notes": "Named in the Act of Settlement."
+    },
+    {
+      "id": "p_ernest_augustus",
+      "displayName": "Ernest Augustus",
+      "sex": "male",
+      "birth": {
+        "date": "20.11.1629",
+        "dateText": null,
+        "place": "Herzberg am Harz"
+      },
+      "death": {
+        "date": "23.01.1698",
+        "dateText": null,
+        "place": "Herrenhausen, Hanover"
+      },
+      "notes": "Elector of Hanover."
+    },
+    {
+      "id": "p_george_i",
+      "displayName": "George I",
+      "sex": "male",
+      "birth": {
+        "date": "28.05.1660",
+        "dateText": null,
+        "place": "Hanover"
+      },
+      "death": {
+        "date": "11.06.1727",
+        "dateText": null,
+        "place": "Osnabruck"
+      },
+      "notes": "First Hanoverian king of Great Britain."
+    },
+    {
+      "id": "p_sophia_dorothea_celle",
+      "displayName": "Sophia Dorothea of Celle",
+      "sex": "female",
+      "birth": {
+        "date": "15.09.1666",
+        "dateText": null,
+        "place": "Celle"
+      },
+      "death": {
+        "date": "13.11.1726",
+        "dateText": null,
+        "place": "Ahlden"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_george_ii",
+      "displayName": "George II",
+      "sex": "male",
+      "birth": {
+        "date": "30.10.1683",
+        "dateText": null,
+        "place": "Hanover"
+      },
+      "death": {
+        "date": "25.10.1760",
+        "dateText": null,
+        "place": "Kensington Palace, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_caroline_ansbach",
+      "displayName": "Caroline of Ansbach",
+      "sex": "female",
+      "birth": {
+        "date": "01.03.1683",
+        "dateText": null,
+        "place": "Ansbach"
+      },
+      "death": {
+        "date": "20.11.1737",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_frederick_wales",
+      "displayName": "Frederick, Prince of Wales",
+      "sex": "male",
+      "birth": {
+        "date": "01.02.1707",
+        "dateText": null,
+        "place": "Hanover"
+      },
+      "death": {
+        "date": "31.03.1751",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_augusta_saxe_gotha",
+      "displayName": "Augusta of Saxe-Gotha",
+      "sex": "female",
+      "birth": {
+        "date": "30.11.1719",
+        "dateText": null,
+        "place": "Gotha"
+      },
+      "death": {
+        "date": "08.02.1772",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_george_iii",
+      "displayName": "George III",
+      "sex": "male",
+      "birth": {
+        "date": "04.06.1738",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": "29.01.1820",
+        "dateText": null,
+        "place": "Windsor Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_charlotte_mecklenburg",
+      "displayName": "Charlotte of Mecklenburg-Strelitz",
+      "sex": "female",
+      "birth": {
+        "date": "19.05.1744",
+        "dateText": null,
+        "place": "Mirow"
+      },
+      "death": {
+        "date": "17.11.1818",
+        "dateText": null,
+        "place": "Kew Palace, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_edward_kent",
+      "displayName": "Prince Edward, Duke of Kent",
+      "sex": "male",
+      "birth": {
+        "date": "02.11.1767",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": "23.01.1820",
+        "dateText": null,
+        "place": "Sidmouth, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_victoria_saxe_coburg_saalfeld",
+      "displayName": "Victoria of Saxe-Coburg-Saalfeld",
+      "sex": "female",
+      "birth": {
+        "date": "17.08.1786",
+        "dateText": null,
+        "place": "Coburg"
+      },
+      "death": {
+        "date": "16.03.1861",
+        "dateText": null,
+        "place": "Windsor, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_queen_victoria",
+      "displayName": "Queen Victoria",
+      "sex": "female",
+      "birth": {
+        "date": "24.05.1819",
+        "dateText": null,
+        "place": "Kensington Palace, England"
+      },
+      "death": {
+        "date": "22.01.1901",
+        "dateText": null,
+        "place": "Osborne House, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_albert",
+      "displayName": "Prince Albert",
+      "sex": "male",
+      "birth": {
+        "date": "26.08.1819",
+        "dateText": null,
+        "place": "Coburg"
+      },
+      "death": {
+        "date": "14.12.1861",
+        "dateText": null,
+        "place": "Windsor Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edward_vii",
+      "displayName": "Edward VII",
+      "sex": "male",
+      "birth": {
+        "date": "09.11.1841",
+        "dateText": null,
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": "06.05.1910",
+        "dateText": null,
+        "place": "Buckingham Palace, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_alexandra_denmark",
+      "displayName": "Alexandra of Denmark",
+      "sex": "female",
+      "birth": {
+        "date": "01.12.1844",
+        "dateText": null,
+        "place": "Copenhagen, Denmark"
+      },
+      "death": {
+        "date": "20.11.1925",
+        "dateText": null,
+        "place": "Sandringham, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_george_v",
+      "displayName": "George V",
+      "sex": "male",
+      "birth": {
+        "date": "03.06.1865",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": "20.01.1936",
+        "dateText": null,
+        "place": "Sandringham, England"
+      },
+      "notes": "In 1917 the royal house name became Windsor."
+    },
+    {
+      "id": "p_mary_teck",
+      "displayName": "Mary of Teck",
+      "sex": "female",
+      "birth": {
+        "date": "26.05.1867",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": "24.03.1953",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edward_viii",
+      "displayName": "Edward VIII",
+      "sex": "male",
+      "birth": {
+        "date": "23.06.1894",
+        "dateText": null,
+        "place": "Richmond, England"
+      },
+      "death": {
+        "date": "28.05.1972",
+        "dateText": null,
+        "place": "Paris, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_george_vi",
+      "displayName": "George VI",
+      "sex": "male",
+      "birth": {
+        "date": "14.12.1895",
+        "dateText": null,
+        "place": "Sandringham, England"
+      },
+      "death": {
+        "date": "06.02.1952",
+        "dateText": null,
+        "place": "Sandringham, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_elizabeth_bowes_lyon",
+      "displayName": "Elizabeth Bowes-Lyon",
+      "sex": "female",
+      "birth": {
+        "date": "04.08.1900",
+        "dateText": null,
+        "place": "United Kingdom"
+      },
+      "death": {
+        "date": "30.03.2002",
+        "dateText": null,
+        "place": "Windsor, England"
+      },
+      "notes": "Queen Elizabeth The Queen Mother."
+    },
+    {
+      "id": "p_elizabeth_ii",
+      "displayName": "Elizabeth II",
+      "sex": "female",
+      "birth": {
+        "date": "21.04.1926",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": "08.09.2022",
+        "dateText": null,
+        "place": "Balmoral Castle, Scotland"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_princess_margaret",
+      "displayName": "Princess Margaret",
+      "sex": "female",
+      "birth": {
+        "date": "21.08.1930",
+        "dateText": null,
+        "place": "Glamis Castle, Scotland"
+      },
+      "death": {
+        "date": "09.02.2002",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_philip",
+      "displayName": "Prince Philip",
+      "sex": "male",
+      "birth": {
+        "date": "10.06.1921",
+        "dateText": null,
+        "place": "Corfu, Greece"
+      },
+      "death": {
+        "date": "09.04.2021",
+        "dateText": null,
+        "place": "Windsor Castle, England"
+      },
+      "notes": "Duke of Edinburgh."
+    },
+    {
+      "id": "p_charles_iii",
+      "displayName": "Charles III",
+      "sex": "male",
+      "birth": {
+        "date": "14.11.1948",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": "Current monarch."
+    },
+    {
+      "id": "p_princess_anne",
+      "displayName": "Anne, Princess Royal",
+      "sex": "female",
+      "birth": {
+        "date": "15.08.1950",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_andrew",
+      "displayName": "Prince Andrew",
+      "sex": "male",
+      "birth": {
+        "date": "19.02.1960",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_edward",
+      "displayName": "Prince Edward",
+      "sex": "male",
+      "birth": {
+        "date": "10.03.1964",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_diana_spencer",
+      "displayName": "Diana, Princess of Wales",
+      "sex": "female",
+      "birth": {
+        "date": "01.07.1961",
+        "dateText": null,
+        "place": "Sandringham, England"
+      },
+      "death": {
+        "date": "31.08.1997",
+        "dateText": null,
+        "place": "Paris, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_william_wales",
+      "displayName": "William, Prince of Wales",
+      "sex": "male",
+      "birth": {
+        "date": "21.06.1982",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_harry",
+      "displayName": "Prince Harry",
+      "sex": "male",
+      "birth": {
+        "date": "15.09.1984",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_catherine_middleton",
+      "displayName": "Catherine, Princess of Wales",
+      "sex": "female",
+      "birth": {
+        "date": "09.01.1982",
+        "dateText": null,
+        "place": "Reading, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_george",
+      "displayName": "Prince George of Wales",
+      "sex": "male",
+      "birth": {
+        "date": "22.07.2013",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_princess_charlotte",
+      "displayName": "Princess Charlotte of Wales",
+      "sex": "female",
+      "birth": {
+        "date": "02.05.2015",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_prince_louis",
+      "displayName": "Prince Louis of Wales",
+      "sex": "male",
+      "birth": {
+        "date": "23.04.2018",
+        "dateText": null,
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": null,
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_robert_curthose",
+      "displayName": "Robert Curthose",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1051",
+        "place": "Normandy"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1134",
+        "place": "Cardiff Castle, Wales"
+      },
+      "notes": "Duke of Normandy."
+    },
+    {
+      "id": "p_william_ii",
+      "displayName": "William II",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1056",
+        "place": "Normandy"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1100",
+        "place": "New Forest, England"
+      },
+      "notes": "King of England."
+    },
+    {
+      "id": "p_adela_normandy",
+      "displayName": "Adela of Normandy",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1067",
+        "place": "Normandy"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1137",
+        "place": null
+      },
+      "notes": null
+    },
+    {
+      "id": "p_stephen_henry_blois",
+      "displayName": "Stephen Henry of Blois",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1045",
+        "place": null
+      },
+      "death": {
+        "date": null,
+        "dateText": "1102",
+        "place": "Ramla"
+      },
+      "notes": "Count of Blois."
+    },
+    {
+      "id": "p_king_stephen",
+      "displayName": "Stephen",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1092",
+        "place": "Blois, France"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1154",
+        "place": "Dover, England"
+      },
+      "notes": "King of England."
+    },
+    {
+      "id": "p_william_adelin",
+      "displayName": "William Adelin",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1103",
+        "place": "Winchester, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1120",
+        "place": "English Channel"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_henry_young_king",
+      "displayName": "Henry the Young King",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1155",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1183",
+        "place": "Martel, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_richard_i",
+      "displayName": "Richard I",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1157",
+        "place": "Oxford, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1199",
+        "place": "Chalus, France"
+      },
+      "notes": "King of England."
+    },
+    {
+      "id": "p_geoffrey_brittany",
+      "displayName": "Geoffrey II, Duke of Brittany",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1158",
+        "place": "England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1186",
+        "place": "Paris, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_eleanor_castile_queen",
+      "displayName": "Eleanor of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1162",
+        "place": "Normandy"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1214",
+        "place": "Burgos, Castile"
+      },
+      "notes": "Queen of Castile."
+    },
+    {
+      "id": "p_joan_england",
+      "displayName": "Joan of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1165",
+        "place": "Angers, France"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1199",
+        "place": "Rouen, Normandy"
+      },
+      "notes": "Queen of Sicily."
+    },
+    {
+      "id": "p_richard_cornwall",
+      "displayName": "Richard, Earl of Cornwall",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1209",
+        "place": "Winchester, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1272",
+        "place": "Berkhamsted, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_joan_scotland",
+      "displayName": "Joan of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1210",
+        "place": "Gloucester, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1238",
+        "place": "Havering-atte-Bower, England"
+      },
+      "notes": "Queen of Scotland."
+    },
+    {
+      "id": "p_isabella_hre",
+      "displayName": "Isabella of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1214",
+        "place": "Gloucester, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1241",
+        "place": "Foggia, Italy"
+      },
+      "notes": "Holy Roman Empress."
+    },
+    {
+      "id": "p_eleanor_leicester",
+      "displayName": "Eleanor of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1215",
+        "place": "Gloucester, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1275",
+        "place": "Montargis, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_margaret_scotland",
+      "displayName": "Margaret of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1240",
+        "place": "Windsor Castle, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1275",
+        "place": "Cupar Castle, Scotland"
+      },
+      "notes": "Queen of Scotland."
+    },
+    {
+      "id": "p_beatrice_brittany",
+      "displayName": "Beatrice of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1242",
+        "place": "Bordeaux, France"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1275",
+        "place": "London, England"
+      },
+      "notes": "Duchess of Brittany."
+    },
+    {
+      "id": "p_edmund_crouchback",
+      "displayName": "Edmund Crouchback",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1245",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1296",
+        "place": "Bayonne, France"
+      },
+      "notes": "Earl of Lancaster."
+    },
+    {
+      "id": "p_joan_acre",
+      "displayName": "Joan of Acre",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1272",
+        "place": "Acre"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1307",
+        "place": "Clare, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_margaret_brabant",
+      "displayName": "Margaret of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1275",
+        "place": "Windsor Castle, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1333",
+        "place": "Brussels"
+      },
+      "notes": "Duchess of Brabant."
+    },
+    {
+      "id": "p_elizabeth_rhuddlan",
+      "displayName": "Elizabeth of Rhuddlan",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1282",
+        "place": "Rhuddlan Castle, Wales"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1316",
+        "place": "Essex, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_margaret_france",
+      "displayName": "Margaret of France",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1279",
+        "place": "Paris, France"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1318",
+        "place": "Marlborough Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_thomas_brotherton",
+      "displayName": "Thomas of Brotherton",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1300",
+        "place": "Brotherton, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1338",
+        "place": null
+      },
+      "notes": "Earl of Norfolk."
+    },
+    {
+      "id": "p_edmund_woodstock",
+      "displayName": "Edmund of Woodstock",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1301",
+        "place": "Woodstock Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1330",
+        "place": "Winchester, England"
+      },
+      "notes": "Earl of Kent."
+    },
+    {
+      "id": "p_john_eltham",
+      "displayName": "John of Eltham",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1316",
+        "place": "Eltham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1336",
+        "place": "Perth, Scotland"
+      },
+      "notes": "Earl of Cornwall."
+    },
+    {
+      "id": "p_eleanor_woodstock",
+      "displayName": "Eleanor of Woodstock",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1318",
+        "place": "Woodstock Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1355",
+        "place": "Deventer"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_joan_tower",
+      "displayName": "Joan of the Tower",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1321",
+        "place": "Tower of London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1362",
+        "place": "Hertford Castle, England"
+      },
+      "notes": "Queen of Scotland."
+    },
+    {
+      "id": "p_edward_black_prince",
+      "displayName": "Edward the Black Prince",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1330",
+        "place": "Woodstock Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1376",
+        "place": "Westminster, England"
+      },
+      "notes": "Prince of Wales."
+    },
+    {
+      "id": "p_lionel_antwerp",
+      "displayName": "Lionel of Antwerp",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1338",
+        "place": "Antwerp"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1368",
+        "place": "Alba, Italy"
+      },
+      "notes": "Duke of Clarence."
+    },
+    {
+      "id": "p_edmund_langley",
+      "displayName": "Edmund of Langley",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1341",
+        "place": "Kings Langley, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1402",
+        "place": "Kings Langley, England"
+      },
+      "notes": "Duke of York."
+    },
+    {
+      "id": "p_isabella_bedford",
+      "displayName": "Isabella of England",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1332",
+        "place": "Woodstock Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1382",
+        "place": null
+      },
+      "notes": "Countess of Bedford."
+    },
+    {
+      "id": "p_thomas_woodstock",
+      "displayName": "Thomas of Woodstock",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1355",
+        "place": "Woodstock Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1397",
+        "place": "Calais"
+      },
+      "notes": "Duke of Gloucester."
+    },
+    {
+      "id": "p_joan_kent",
+      "displayName": "Joan of Kent",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1328",
+        "place": null
+      },
+      "death": {
+        "date": null,
+        "dateText": "1385",
+        "place": "Wallingford Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_richard_ii",
+      "displayName": "Richard II",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1367",
+        "place": "Bordeaux, France"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1400",
+        "place": "Pontefract Castle, England"
+      },
+      "notes": "King of England."
+    },
+    {
+      "id": "p_arthur_tudor",
+      "displayName": "Arthur Tudor",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1486",
+        "place": "Winchester, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1502",
+        "place": "Ludlow Castle, England"
+      },
+      "notes": "Prince of Wales."
+    },
+    {
+      "id": "p_henry_viii",
+      "displayName": "Henry VIII",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1491",
+        "place": "Greenwich Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1547",
+        "place": "Whitehall Palace, England"
+      },
+      "notes": "King of England."
+    },
+    {
+      "id": "p_mary_tudor_france",
+      "displayName": "Mary Tudor",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1496",
+        "place": "Richmond Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1533",
+        "place": "Westhorpe, England"
+      },
+      "notes": "Queen of France."
+    },
+    {
+      "id": "p_catherine_aragon",
+      "displayName": "Catherine of Aragon",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1485",
+        "place": "Alcala de Henares, Spain"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1536",
+        "place": "Kimbolton Castle, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_mary_i",
+      "displayName": "Mary I",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1516",
+        "place": "Greenwich Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1558",
+        "place": "St James's Palace, England"
+      },
+      "notes": "Queen of England."
+    },
+    {
+      "id": "p_anne_boleyn",
+      "displayName": "Anne Boleyn",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1501",
+        "place": "England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1536",
+        "place": "Tower of London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_elizabeth_i",
+      "displayName": "Elizabeth I",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1533",
+        "place": "Greenwich Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1603",
+        "place": "Richmond Palace, England"
+      },
+      "notes": "Queen of England."
+    },
+    {
+      "id": "p_jane_seymour",
+      "displayName": "Jane Seymour",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "ca 1508",
+        "place": "England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1537",
+        "place": "Hampton Court Palace, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_edward_vi",
+      "displayName": "Edward VI",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1537",
+        "place": "Hampton Court Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1553",
+        "place": "Greenwich Palace, England"
+      },
+      "notes": "King of England."
+    },
+    {
+      "id": "p_henry_frederick",
+      "displayName": "Henry Frederick",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1594",
+        "place": "Stirling Castle, Scotland"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1612",
+        "place": "London, England"
+      },
+      "notes": "Prince of Wales."
+    },
+    {
+      "id": "p_charles_i",
+      "displayName": "Charles I",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1600",
+        "place": "Dunfermline, Scotland"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1649",
+        "place": "Whitehall, England"
+      },
+      "notes": "King of England, Scotland and Ireland."
+    },
+    {
+      "id": "p_henrietta_maria",
+      "displayName": "Henrietta Maria of France",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1609",
+        "place": "Paris, France"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1669",
+        "place": "Colombes, France"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_charles_ii",
+      "displayName": "Charles II",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1630",
+        "place": "St James's Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1685",
+        "place": "Whitehall Palace, England"
+      },
+      "notes": "King of England, Scotland and Ireland."
+    },
+    {
+      "id": "p_james_ii",
+      "displayName": "James II and VII",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1633",
+        "place": "St James's Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1701",
+        "place": "Saint-Germain-en-Laye, France"
+      },
+      "notes": "King of England, Scotland and Ireland."
+    },
+    {
+      "id": "p_mary_princess_royal",
+      "displayName": "Mary, Princess Royal",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1631",
+        "place": "St James's Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1660",
+        "place": "Whitehall Palace, England"
+      },
+      "notes": "Princess of Orange."
+    },
+    {
+      "id": "p_william_ii_orange",
+      "displayName": "William II of Orange",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1626",
+        "place": "The Hague"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1650",
+        "place": "The Hague"
+      },
+      "notes": "Prince of Orange."
+    },
+    {
+      "id": "p_william_iii",
+      "displayName": "William III",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1650",
+        "place": "The Hague"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1702",
+        "place": "Kensington Palace, England"
+      },
+      "notes": "King of England, Scotland and Ireland."
+    },
+    {
+      "id": "p_anne_hyde",
+      "displayName": "Anne Hyde",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1637",
+        "place": "Windsor, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1671",
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_mary_ii",
+      "displayName": "Mary II",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1662",
+        "place": "St James's Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1694",
+        "place": "Kensington Palace, England"
+      },
+      "notes": "Queen of England, Scotland and Ireland."
+    },
+    {
+      "id": "p_queen_anne",
+      "displayName": "Anne",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1665",
+        "place": "St James's Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1714",
+        "place": "Kensington Palace, England"
+      },
+      "notes": "Queen of Great Britain."
+    },
+    {
+      "id": "p_george_iv",
+      "displayName": "George IV",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1762",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1830",
+        "place": "Windsor Castle, England"
+      },
+      "notes": "King of the United Kingdom."
+    },
+    {
+      "id": "p_william_iv",
+      "displayName": "William IV",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1765",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1837",
+        "place": "Windsor Castle, England"
+      },
+      "notes": "King of the United Kingdom."
+    },
+    {
+      "id": "p_ernest_augustus_hanover",
+      "displayName": "Ernest Augustus",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1771",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1851",
+        "place": "Hanover"
+      },
+      "notes": "King of Hanover."
+    },
+    {
+      "id": "p_caroline_brunswick",
+      "displayName": "Caroline of Brunswick",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1768",
+        "place": "Brunswick"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1821",
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_princess_charlotte_wales",
+      "displayName": "Princess Charlotte of Wales",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1796",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1817",
+        "place": "Esher, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_victoria_princess_royal",
+      "displayName": "Victoria, Princess Royal",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1840",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1901",
+        "place": "Kronberg, Germany"
+      },
+      "notes": "German Empress."
+    },
+    {
+      "id": "p_princess_alice",
+      "displayName": "Princess Alice",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1843",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1878",
+        "place": "Darmstadt, Germany"
+      },
+      "notes": "Grand Duchess of Hesse."
+    },
+    {
+      "id": "p_prince_alfred",
+      "displayName": "Prince Alfred",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1844",
+        "place": "Windsor Castle, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1900",
+        "place": "Coburg"
+      },
+      "notes": "Duke of Saxe-Coburg and Gotha."
+    },
+    {
+      "id": "p_princess_helena",
+      "displayName": "Princess Helena",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1846",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1923",
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_princess_louise",
+      "displayName": "Princess Louise",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1848",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1939",
+        "place": "London, England"
+      },
+      "notes": "Duchess of Argyll."
+    },
+    {
+      "id": "p_prince_arthur",
+      "displayName": "Prince Arthur",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1850",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1942",
+        "place": "Bagshot Park, England"
+      },
+      "notes": "Duke of Connaught."
+    },
+    {
+      "id": "p_prince_leopold",
+      "displayName": "Prince Leopold",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1853",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1884",
+        "place": "Cannes, France"
+      },
+      "notes": "Duke of Albany."
+    },
+    {
+      "id": "p_princess_beatrice",
+      "displayName": "Princess Beatrice",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1857",
+        "place": "Buckingham Palace, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1944",
+        "place": "Brantridge Park, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_albert_victor",
+      "displayName": "Prince Albert Victor",
+      "sex": "male",
+      "birth": {
+        "date": null,
+        "dateText": "1864",
+        "place": "Windsor, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1892",
+        "place": "Sandringham, England"
+      },
+      "notes": "Duke of Clarence and Avondale."
+    },
+    {
+      "id": "p_louise_princess_royal",
+      "displayName": "Louise, Princess Royal",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1867",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1931",
+        "place": "London, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_princess_victoria_edward",
+      "displayName": "Princess Victoria",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1868",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1935",
+        "place": "Iver, England"
+      },
+      "notes": null
+    },
+    {
+      "id": "p_maud_norway",
+      "displayName": "Maud of Wales",
+      "sex": "female",
+      "birth": {
+        "date": null,
+        "dateText": "1869",
+        "place": "London, England"
+      },
+      "death": {
+        "date": null,
+        "dateText": "1938",
+        "place": "London, England"
+      },
+      "notes": "Queen of Norway."
+    }
+  ],
+  "families": [
+    {
+      "id": "f_william_i_matilda",
+      "parentIds": [
+        "p_william_i",
+        "p_matilda_flanders"
+      ],
+      "childIds": [
+        "p_henry_i",
+        "p_robert_curthose",
+        "p_william_ii",
+        "p_adela_normandy"
+      ]
+    },
+    {
+      "id": "f_henry_i_matilda",
+      "parentIds": [
+        "p_henry_i",
+        "p_matilda_scotland"
+      ],
+      "childIds": [
+        "p_empress_matilda",
+        "p_william_adelin"
+      ]
+    },
+    {
+      "id": "f_empress_matilda_geoffrey",
+      "parentIds": [
+        "p_empress_matilda",
+        "p_geoffrey_plantagenet"
+      ],
+      "childIds": [
+        "p_henry_ii"
+      ]
+    },
+    {
+      "id": "f_henry_ii_eleanor",
+      "parentIds": [
+        "p_henry_ii",
+        "p_eleanor_aquitaine"
+      ],
+      "childIds": [
+        "p_john",
+        "p_henry_young_king",
+        "p_richard_i",
+        "p_geoffrey_brittany",
+        "p_eleanor_castile_queen",
+        "p_joan_england"
+      ]
+    },
+    {
+      "id": "f_john_isabella",
+      "parentIds": [
+        "p_john",
+        "p_isabella_angouleme"
+      ],
+      "childIds": [
+        "p_henry_iii",
+        "p_richard_cornwall",
+        "p_joan_scotland",
+        "p_isabella_hre",
+        "p_eleanor_leicester"
+      ]
+    },
+    {
+      "id": "f_henry_iii_eleanor",
+      "parentIds": [
+        "p_henry_iii",
+        "p_eleanor_provence"
+      ],
+      "childIds": [
+        "p_edward_i",
+        "p_margaret_scotland",
+        "p_beatrice_brittany",
+        "p_edmund_crouchback"
+      ]
+    },
+    {
+      "id": "f_edward_i_eleanor",
+      "parentIds": [
+        "p_edward_i",
+        "p_eleanor_castile"
+      ],
+      "childIds": [
+        "p_edward_ii",
+        "p_joan_acre",
+        "p_margaret_brabant",
+        "p_elizabeth_rhuddlan"
+      ]
+    },
+    {
+      "id": "f_edward_ii_isabella",
+      "parentIds": [
+        "p_edward_ii",
+        "p_isabella_france"
+      ],
+      "childIds": [
+        "p_edward_iii",
+        "p_john_eltham",
+        "p_eleanor_woodstock",
+        "p_joan_tower"
+      ]
+    },
+    {
+      "id": "f_edward_iii_philippa",
+      "parentIds": [
+        "p_edward_iii",
+        "p_philippa_hainault"
+      ],
+      "childIds": [
+        "p_john_gaunt",
+        "p_edward_black_prince",
+        "p_lionel_antwerp",
+        "p_edmund_langley",
+        "p_isabella_bedford",
+        "p_thomas_woodstock"
+      ]
+    },
+    {
+      "id": "f_john_gaunt_katherine",
+      "parentIds": [
+        "p_john_gaunt",
+        "p_katherine_swynford"
+      ],
+      "childIds": [
+        "p_john_beaufort_earl"
+      ]
+    },
+    {
+      "id": "f_john_beaufort_earl_margaret",
+      "parentIds": [
+        "p_john_beaufort_earl",
+        "p_margaret_holland"
+      ],
+      "childIds": [
+        "p_john_beaufort_duke"
+      ]
+    },
+    {
+      "id": "f_john_beaufort_duke_margaret",
+      "parentIds": [
+        "p_john_beaufort_duke",
+        "p_margaret_beauchamp"
+      ],
+      "childIds": [
+        "p_margaret_beaufort"
+      ]
+    },
+    {
+      "id": "f_margaret_beaufort_edmund",
+      "parentIds": [
+        "p_margaret_beaufort",
+        "p_edmund_tudor"
+      ],
+      "childIds": [
+        "p_henry_vii"
+      ]
+    },
+    {
+      "id": "f_henry_vii_elizabeth",
+      "parentIds": [
+        "p_henry_vii",
+        "p_elizabeth_york"
+      ],
+      "childIds": [
+        "p_margaret_tudor",
+        "p_arthur_tudor",
+        "p_henry_viii",
+        "p_mary_tudor_france"
+      ]
+    },
+    {
+      "id": "f_margaret_tudor_james_iv",
+      "parentIds": [
+        "p_margaret_tudor",
+        "p_james_iv"
+      ],
+      "childIds": [
+        "p_james_v"
+      ]
+    },
+    {
+      "id": "f_james_v_mary_guise",
+      "parentIds": [
+        "p_james_v",
+        "p_mary_guise"
+      ],
+      "childIds": [
+        "p_mary_scots"
+      ]
+    },
+    {
+      "id": "f_mary_scots_darnley",
+      "parentIds": [
+        "p_mary_scots",
+        "p_lord_darnley"
+      ],
+      "childIds": [
+        "p_james_vi_i"
+      ]
+    },
+    {
+      "id": "f_james_vi_i_anne",
+      "parentIds": [
+        "p_james_vi_i",
+        "p_anne_denmark"
+      ],
+      "childIds": [
+        "p_elizabeth_stuart",
+        "p_henry_frederick",
+        "p_charles_i"
+      ]
+    },
+    {
+      "id": "f_elizabeth_stuart_frederick",
+      "parentIds": [
+        "p_elizabeth_stuart",
+        "p_frederick_v"
+      ],
+      "childIds": [
+        "p_sophia_hanover"
+      ]
+    },
+    {
+      "id": "f_sophia_hanover_ernest",
+      "parentIds": [
+        "p_sophia_hanover",
+        "p_ernest_augustus"
+      ],
+      "childIds": [
+        "p_george_i"
+      ]
+    },
+    {
+      "id": "f_george_i_sophia_dorothea",
+      "parentIds": [
+        "p_george_i",
+        "p_sophia_dorothea_celle"
+      ],
+      "childIds": [
+        "p_george_ii"
+      ]
+    },
+    {
+      "id": "f_george_ii_caroline",
+      "parentIds": [
+        "p_george_ii",
+        "p_caroline_ansbach"
+      ],
+      "childIds": [
+        "p_frederick_wales"
+      ]
+    },
+    {
+      "id": "f_frederick_augusta",
+      "parentIds": [
+        "p_frederick_wales",
+        "p_augusta_saxe_gotha"
+      ],
+      "childIds": [
+        "p_george_iii"
+      ]
+    },
+    {
+      "id": "f_george_iii_charlotte",
+      "parentIds": [
+        "p_george_iii",
+        "p_charlotte_mecklenburg"
+      ],
+      "childIds": [
+        "p_prince_edward_kent",
+        "p_george_iv",
+        "p_william_iv",
+        "p_ernest_augustus_hanover"
+      ]
+    },
+    {
+      "id": "f_edward_kent_victoria",
+      "parentIds": [
+        "p_prince_edward_kent",
+        "p_victoria_saxe_coburg_saalfeld"
+      ],
+      "childIds": [
+        "p_queen_victoria"
+      ]
+    },
+    {
+      "id": "f_victoria_albert",
+      "parentIds": [
+        "p_queen_victoria",
+        "p_prince_albert"
+      ],
+      "childIds": [
+        "p_edward_vii",
+        "p_victoria_princess_royal",
+        "p_princess_alice",
+        "p_prince_alfred",
+        "p_princess_helena",
+        "p_princess_louise",
+        "p_prince_arthur",
+        "p_prince_leopold",
+        "p_princess_beatrice"
+      ]
+    },
+    {
+      "id": "f_edward_vii_alexandra",
+      "parentIds": [
+        "p_edward_vii",
+        "p_alexandra_denmark"
+      ],
+      "childIds": [
+        "p_george_v",
+        "p_albert_victor",
+        "p_louise_princess_royal",
+        "p_princess_victoria_edward",
+        "p_maud_norway"
+      ]
+    },
+    {
+      "id": "f_george_v_mary",
+      "parentIds": [
+        "p_george_v",
+        "p_mary_teck"
+      ],
+      "childIds": [
+        "p_edward_viii",
+        "p_george_vi"
+      ]
+    },
+    {
+      "id": "f_george_vi_elizabeth",
+      "parentIds": [
+        "p_george_vi",
+        "p_elizabeth_bowes_lyon"
+      ],
+      "childIds": [
+        "p_elizabeth_ii",
+        "p_princess_margaret"
+      ]
+    },
+    {
+      "id": "f_elizabeth_ii_philip",
+      "parentIds": [
+        "p_elizabeth_ii",
+        "p_prince_philip"
+      ],
+      "childIds": [
+        "p_charles_iii",
+        "p_princess_anne",
+        "p_prince_andrew",
+        "p_prince_edward"
+      ]
+    },
+    {
+      "id": "f_charles_diana",
+      "parentIds": [
+        "p_charles_iii",
+        "p_diana_spencer"
+      ],
+      "childIds": [
+        "p_william_wales",
+        "p_prince_harry"
+      ]
+    },
+    {
+      "id": "f_william_catherine",
+      "parentIds": [
+        "p_william_wales",
+        "p_catherine_middleton"
+      ],
+      "childIds": [
+        "p_prince_george",
+        "p_princess_charlotte",
+        "p_prince_louis"
+      ]
+    },
+    {
+      "id": "f_adela_stephen_henry",
+      "parentIds": [
+        "p_adela_normandy",
+        "p_stephen_henry_blois"
+      ],
+      "childIds": [
+        "p_king_stephen"
+      ]
+    },
+    {
+      "id": "f_edward_i_margaret_france",
+      "parentIds": [
+        "p_edward_i",
+        "p_margaret_france"
+      ],
+      "childIds": [
+        "p_thomas_brotherton",
+        "p_edmund_woodstock"
+      ]
+    },
+    {
+      "id": "f_black_prince_joan_kent",
+      "parentIds": [
+        "p_edward_black_prince",
+        "p_joan_kent"
+      ],
+      "childIds": [
+        "p_richard_ii"
+      ]
+    },
+    {
+      "id": "f_henry_viii_catherine",
+      "parentIds": [
+        "p_henry_viii",
+        "p_catherine_aragon"
+      ],
+      "childIds": [
+        "p_mary_i"
+      ]
+    },
+    {
+      "id": "f_henry_viii_anne",
+      "parentIds": [
+        "p_henry_viii",
+        "p_anne_boleyn"
+      ],
+      "childIds": [
+        "p_elizabeth_i"
+      ]
+    },
+    {
+      "id": "f_henry_viii_jane",
+      "parentIds": [
+        "p_henry_viii",
+        "p_jane_seymour"
+      ],
+      "childIds": [
+        "p_edward_vi"
+      ]
+    },
+    {
+      "id": "f_charles_i_henrietta",
+      "parentIds": [
+        "p_charles_i",
+        "p_henrietta_maria"
+      ],
+      "childIds": [
+        "p_charles_ii",
+        "p_james_ii",
+        "p_mary_princess_royal"
+      ]
+    },
+    {
+      "id": "f_mary_princess_royal_william_orange",
+      "parentIds": [
+        "p_mary_princess_royal",
+        "p_william_ii_orange"
+      ],
+      "childIds": [
+        "p_william_iii"
+      ]
+    },
+    {
+      "id": "f_james_ii_anne_hyde",
+      "parentIds": [
+        "p_james_ii",
+        "p_anne_hyde"
+      ],
+      "childIds": [
+        "p_mary_ii",
+        "p_queen_anne"
+      ]
+    },
+    {
+      "id": "f_george_iv_caroline",
+      "parentIds": [
+        "p_george_iv",
+        "p_caroline_brunswick"
+      ],
+      "childIds": [
+        "p_princess_charlotte_wales"
+      ]
+    }
+  ]
+}
